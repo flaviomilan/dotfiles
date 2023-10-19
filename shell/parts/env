@@ -1,0 +1,21 @@
+# --------------------------------------------------
+# Environment Variables
+# Define custom environment variables here
+
+export PATH=$PATH:$HOME/.local/bin
+
+# language manager
+# sdkman - JVM stacks
+SDKMAN_INIT_SCRIPT="$HOME/.sdkman/bin/sdkman-init.sh"
+if [[ -f "$SDKMAN_INIT_SCRIPT" ]]; then
+    export SDKMAN_DIR="$HOME/.sdkman"
+    [[ -s "$SDKMAN_INIT_SCRIPT" ]] && source "$SDKMAN_INIT_SCRIPT"
+fi
+
+# asdf - universal language manager
+ASDF_SH="$HOME/.asdf/asdf.sh"
+ASDF_COMPLETIONS="$HOME/.asdf/completions/asdf.bash"
+
+[[ -f "$ASDF_SH" ]] && . "$ASDF_SH"
+[[ -f "$ASDF_COMPLETIONS" ]] && . "$ASDF_COMPLETIONS"
+

@@ -1,0 +1,7 @@
+# --------------------------------------------------
+# Aliases
+# Define custom command aliases for convenience
+
+# Unix
+alias ls='exa -al'
+

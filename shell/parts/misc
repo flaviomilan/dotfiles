@@ -1,0 +1,6 @@
+# --------------------------------------------------
+# Miscellaneous
+# Any other configurations or commands you want to add
+
+# startship shell
+eval "$(starship init bash)"

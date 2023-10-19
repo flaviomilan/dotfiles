@@ -4,6 +4,15 @@
 
 ## Installation
 
+### Install dependencies
+
+lua
+
+```shell
+luarocks install luafilesystem 
+luarocks install ltui
+```
+
 ### Install sdkman
 
 ```shell
