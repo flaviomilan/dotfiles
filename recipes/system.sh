@@ -9,10 +9,10 @@ install_system() {
         exit 1
     fi
 
-    # Read the packages from the file and install them
+    # Read the packages from the file and install them silently
     while IFS= read -r package; do
         echo "Installing $package..."
-        sudo pacman -Syu $package
+        sudo pacman -Syuq --noconfirm "$package"
 
         if [ $? -eq 0 ]; then
             echo "Installed $package successfully."

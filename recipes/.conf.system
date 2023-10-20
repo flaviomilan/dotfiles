@@ -4,3 +4,5 @@ bat
 fd
 tokei
 grex
+tmux
+libyaml

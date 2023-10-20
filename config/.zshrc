@@ -4,6 +4,10 @@
 
 export PATH=$PATH:$HOME/.local/bin
 
+# zsh autosuggestions
+ZSH_AS="$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[[ -f "$ZSH_AS" ]] && echo "$ZSH_AS"
+
 # language manager
 # sdkman - JVM stacks
 SDKMAN_INIT_SCRIPT="$HOME/.sdkman/bin/sdkman-init.sh"
@@ -29,7 +33,7 @@ eval "$(starship init zsh)"
 
 # Unix
 alias ls='exa -al'
-
+alias vim='nvim'
 
 # --------------------------------------------------
 # Shell Options

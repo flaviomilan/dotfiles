@@ -19,6 +19,7 @@ install_asdf() {
 }
 
 install_asdf_languages() {
+    ASDF_FLAG=true
     load_asdf_env
 
     # Check if ASDF is installed
@@ -38,11 +39,11 @@ install_asdf_languages() {
         echo "Installing $language version $version..."
         
         # Use ASDF to install the language and version
-        asdf plugin-add "$language"
-        asdf install "$language" "$version"
+        asdf plugin add $language
+        asdf install $language $version
         
         # Set the installed version as the global version
-        asdf global "$language" "$version"
+        asdf global $language $version
         
         # Check if installation was successful
         if [ $? -eq 0 ]; then
