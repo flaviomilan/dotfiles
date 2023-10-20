@@ -1,60 +1,23 @@
 # dotfiles
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub Stars](https://img.shields.io/github/stars/flaviomilan/dotfiles.svg)](https://github.com/username/flaviomilan/dotfiles)
+[![GitHub Forks](https://img.shields.io/github/forks/flaviomilan/dotfiles.svg)](https://github.com/username/flaviomilan/dotfiles)
 
 
-## Installation
+# Setup Arch based distros
 
-### Install sdkman
+## prepare linux
 
-```shell
-curl -s "https://get.sdkman.io" | bash
-```
+### install polybar
+`sudo pacman -S polybar`
 
-### Install asdf
+### nvim packages
+- https://github.com/williamboman/mason.nvim
+- https://github.com/VonHeikemen/lsp-zero.nvim
+- https://github.com/mbbill/undotree
+- https://github.com/nvim-treesitter/nvim-treesitter
+- https://github.com/rose-pine/neovim
+- https://github.com/wbthomason/packer.nvim
+- https://github.com/nvim-telescope/telescope.nvim
 
-```shell
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf
-```
-
-### Install auxiliary
-
-MacOS
-```shell
-brew install exa ripgrep bat fd tokei grex
-```
-
-Arch Linux
-```shell
-sudo pacman -Syu exa ripgrep bat fd tokei grex
-```
-
-### Install programming languages
-
-sdkman
-```shell
-sdk install java 21-amzn
-sdk use java 21-amzn
-sdk install maven 3.9.5
-sdk use maven 3.9.5
-sdk install groovy 4.0.15
-sdk use groovy 4.0.15
-```
-
-asdf
-```shell
-asdf plugin add nodejs
-asdf plugin add lua
-asdf plugin add go
-```
-
-## Usage
-
-
-
-## Contributing
-
-
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)

@@ -4,6 +4,10 @@
 
 export PATH=$PATH:$HOME/.local/bin
 
+# zsh autosuggestions
+ZSH_AS="$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[[ -f "$ZSH_AS" ]] && source "$ZSH_AS"
+
 # language manager
 # sdkman - JVM stacks
 SDKMAN_INIT_SCRIPT="$HOME/.sdkman/bin/sdkman-init.sh"
@@ -19,6 +23,9 @@ ASDF_COMPLETIONS="$HOME/.asdf/completions/asdf.bash"
 [[ -f "$ASDF_SH" ]] && . "$ASDF_SH"
 [[ -f "$ASDF_COMPLETIONS" ]] && . "$ASDF_COMPLETIONS"
 
+# rustup
+source "$HOME/.cargo/env"
+
 # startship shell
 eval "$(starship init zsh)"
 
@@ -28,7 +35,14 @@ eval "$(starship init zsh)"
 # Define custom command aliases for convenience
 
 # Unix
-alias ls='exa -al'
+alias ls='exa -l'
+alias vim='nvim'
+
+# Tmux
+alias tx='tmux'
+alias txs='tmux new-session -s'
+alias txl='tmux list-sessions'
+alias txa='tmux attach-session -t'
 
 
 # --------------------------------------------------
