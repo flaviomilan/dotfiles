@@ -28,8 +28,8 @@ eval "$(starship init bash)"
 # Define custom command aliases for convenience
 
 # Unix
-alias ls='exa -al'
-
+alias ls='exa -l'
+alias vim='nvim'
 
 # --------------------------------------------------
 # Shell Options

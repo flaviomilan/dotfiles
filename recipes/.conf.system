@@ -4,5 +4,10 @@ bat
 fd
 tokei
 grex
-tmux
 libyaml
+zsh
+unzip
+zip
+starship
+neovim
+base-devel
