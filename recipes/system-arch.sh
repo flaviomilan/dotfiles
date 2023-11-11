@@ -1,16 +1,25 @@
 #!/bin/bash
 
-config_file="recipes/.conf.system"
+# Define an array with the packages to be installed
+packages=(
+    exa
+    ripgrep
+    bat
+    fd
+    tokei
+    grex
+    libyaml
+    zsh
+    unzip
+    zip
+    starship
+    neovim
+    base-devel
+)
 
 install_system() {
-    # Check if the packages file exists
-    if [ ! -f "$config_file" ]; then
-        echo "Error: $config_file file not found."
-        exit 1
-    fi
-
-    # Read the packages from the file and install them silently
-    while IFS= read -r package; do
+    # Install packages silently
+    for package in "${packages[@]}"; do
         echo "Installing $package..."
         sudo pacman -Syuq --noconfirm "$package"
 
@@ -19,7 +28,7 @@ install_system() {
         else
             echo "Failed to install $package."
         fi
-    done < "$config_file"
+    done
 
     echo "All installations completed."
 }

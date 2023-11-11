@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 # install_system
-source "recipes/system-arch.sh"
+source "recipes/system-deb.sh"
 install_system
 
 # asdf

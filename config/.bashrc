@@ -19,6 +19,9 @@ ASDF_COMPLETIONS="$HOME/.asdf/completions/asdf.bash"
 [[ -f "$ASDF_SH" ]] && . "$ASDF_SH"
 [[ -f "$ASDF_COMPLETIONS" ]] && . "$ASDF_COMPLETIONS"
 
+# rustup
+source "$HOME/.cargo/env"
+
 # startship shell
 eval "$(starship init bash)"
 
