@@ -12,7 +12,6 @@ packages=(
     zsh
     unzip
     zip
-    starship
     neovim
     base-devel
 )

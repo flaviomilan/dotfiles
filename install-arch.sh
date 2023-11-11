@@ -4,6 +4,10 @@
 source "recipes/system-arch.sh"
 install_system
 
+# install starship
+source "recipes/starship-rs.sh"
+install_starship
+
 # asdf
 source "recipes/asdf.sh"
 install_asdf
