@@ -6,9 +6,6 @@ gaps inner 10
 default_floating_border none
 default_border none
 
-# Colors
-include colors.catppuccin-mocha
-
 # Keybindings
 include keybindings
 
@@ -29,3 +26,6 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # wallpaper
 exec_always feh --bg-fill $HOME/wallpaper.jpeg
+
+# audio
+exec --no-startup-id pulseaudio --start
