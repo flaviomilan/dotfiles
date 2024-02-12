@@ -16,7 +16,8 @@ config_folder="../config"
 copy_to_home() {
     echo "Copying files from config to home directory..."
     for file in "${files_to_copy[@]}"; do
-        cp -r "$config_folder/$file" "$HOME/"
+        echo "$HOME/$file"
+        cp -r "$config_folder/$file" "$HOME/$file"
     done
     echo "Files copied to home directory."
 }
@@ -24,6 +25,7 @@ copy_to_home() {
 copy_to_config() {
     echo "Copying files from home directory to config..."
     for file in "${files_to_copy[@]}"; do
+        echo "$config_folder/$file"
         cp -r "$HOME/$file" "$config_folder/$file"
     done
     echo "Files copied to config folder."
