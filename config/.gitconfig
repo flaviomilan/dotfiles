@@ -1,0 +1,10 @@
+[user]
+    name = Flavio Milan 
+    email = oflaviomilan@gmail.com
+    signinkey = F2B39D62FBAFB1D9 
+
+[core]
+    editor = nvim
+
+[commit]
+    gpgsign = true

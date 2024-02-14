@@ -4,6 +4,12 @@
 
 export PATH=$PATH:$HOME/.local/bin
 
+# nvim
+NVIM_DIR="/opt/nvim-linux64/bin"
+if [[ -d "$NVIM_DIR" ]]; then
+  export PATH=$PATH:"$NVIM_DIR"
+fi
+
 # language manager
 # sdkman - JVM stacks
 SDKMAN_INIT_SCRIPT="$HOME/.sdkman/bin/sdkman-init.sh"
@@ -44,6 +50,8 @@ alias txk='tmux kill-server -a'
 # grep
 alias rgsearch="rg --ignore-case --smart-case --line-number --column --no-heading"
 
+# ubuntu
+alias full-update="sudo apt update && sudo apt upgrade && sudo apt dist-upgrade"
 
 # --------------------------------------------------
 # Shell Options

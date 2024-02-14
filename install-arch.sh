@@ -1,24 +1,24 @@
 #!/bin/env bash
 
 # install_system
-source "recipes/system-deb.sh"
+source "bin/system-arch.sh"
 install_system
 
 # install starship
-source "recipes/starship-rs.sh"
+source "bin/starship-rs.sh"
 install_starship
 
 # asdf
-source "recipes/asdf.sh"
+source "bin/asdf.sh"
 install_asdf
 install_asdf_languages
 
 # sdkman
-source "recipes/sdkman.sh"
+source "bin/sdkman.sh"
 install_sdkman
 install_sdkman_languages
 
 # rustup
-source "recipes/rustup.sh"
+source "bin/rustup.sh"
 install_rustup
 install_rustup_languages

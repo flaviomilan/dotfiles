@@ -9,7 +9,7 @@ install_starship() {
 
     # Download and install starship
     echo "Downloading starship..."
-    curl -fsSL https://starship.rs/install.sh | bash
+    curl -fsSL https://starship.rs/install.sh | sh
 
     echo "Starship installed successfully!"
 }
