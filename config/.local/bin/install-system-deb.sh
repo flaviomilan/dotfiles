@@ -10,6 +10,7 @@ packages=(
     zsh
     unzip
     zip
+    ranger
     build-essential
     libssl-dev 
     zlib1g-dev 
@@ -29,18 +30,16 @@ packages=(
     git
 )
 
-install_system() {
-    # Install packages silently
-    for package in "${packages[@]}"; do
-        echo "Installing $package..."
-        sudo apt install -y "$package"
+# Install packages silently
+for package in "${packages[@]}"; do
+    echo "Installing $package..."
+    sudo apt install -y "$package"
 
-        if [ $? -eq 0 ]; then
-            echo "Installed $package successfully."
-        else
-            echo "Failed to install $package."
-        fi
-    done
+    if [ $? -eq 0 ]; then
+        echo "Installed $package successfully."
+    else
+        echo "Failed to install $package."
+    fi
+done
 
-    echo "All installations completed."
-}
+echo "All installations completed."
