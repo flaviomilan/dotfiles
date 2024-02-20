@@ -13,7 +13,9 @@ return {
           ["core.dirman"] = {      -- Manages Neorg workspaces
             config = {
               workspaces = {
-                personal = "~/zettelkasten",
+                personal = "~/zettelkasten/personal",
+                work = "~/zettelkasten/work/",
+                programming = "~/zettelkasten/programming/"
               },
               index = "index.norg"
             },
