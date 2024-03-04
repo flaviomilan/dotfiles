@@ -1,1 +1,1 @@
-require("haxtof.remap")
+require 'haxtof.remap'

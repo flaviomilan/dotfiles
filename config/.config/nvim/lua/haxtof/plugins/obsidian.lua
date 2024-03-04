@@ -1,17 +1,17 @@
 return {
-    "epwalsh/obsidian.nvim",
-    version = "*",
-    lazy = true,
-    -- ft = "markdown",
-    dependencies = {
-        "nvim-lua/plenary.nvim",
+  'epwalsh/obsidian.nvim',
+  version = '*',
+  lazy = true,
+  ft = 'markdown',
+  dependencies = {
+    'nvim-lua/plenary.nvim',
+  },
+  opts = {
+    workspaces = {
+      {
+        name = 'Zettel',
+        path = '~/zettel/',
+      },
     },
-    opts = {
-        workspaces = {
-            {
-                name = "zettel",
-                path = "~/zettel",
-            },
-        },
-    }
+  },
 }
