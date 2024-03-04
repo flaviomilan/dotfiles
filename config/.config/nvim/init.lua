@@ -663,8 +663,10 @@ require('lazy').setup {
 
   -- require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
-  require 'haxtof.plugins.obsidian',
+  { import = 'haxtof.plugins' },
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+require 'haxtof'
