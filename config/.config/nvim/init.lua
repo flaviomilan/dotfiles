@@ -6,6 +6,9 @@ vim.g.maplocalleader = ' '
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 
+-- set conceallevel
+vim.opt.conceallevel = 1
+
 -- Make line numbers default
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -652,7 +655,23 @@ require('lazy').setup {
 
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup {
-        ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
+        ensure_installed = {
+          'bash',
+          'c',
+          'go',
+          'python',
+          'elixir',
+          'rust',
+          'java',
+          'javascript',
+          'html',
+          'lua',
+          'markdown',
+          'vim',
+          'vimdoc',
+          'markdown',
+          'markdown_inline',
+        },
         -- Autoinstall languages that are not installed
         auto_install = true,
         highlight = { enable = true },
