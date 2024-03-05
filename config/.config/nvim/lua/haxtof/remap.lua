@@ -38,4 +38,13 @@ require('which-key').register {
     p = { '<cmd>ObsidianTags<cr>', 'Tags' },
     w = { '<cmd>ObsidianWorkspace<cr>', 'Workspaces' },
   },
+
+  -- INFO: Projects binds
+  -- Binds utilizados em conjunto com o plugin `neovim-project`
+  ['<leader>p'] = {
+    name = '[P]rojects',
+    d = { '<cmd>Telescope neovim-project discover<cr>', 'Find projects' },
+    h = { '<cmd>Telescope neovim-project history<cr>', 'History' },
+    l = { '<cmd>NeovimProjectLoadRecent<cr>', 'Load recent' },
+  },
 }
