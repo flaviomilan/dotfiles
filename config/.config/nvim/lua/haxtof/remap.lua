@@ -19,21 +19,30 @@ require('which-key').register {
     name = '[O]bsidian',
 
     -- notes
-    a = { '<cmd>ObsidianQuickSwitch<cr>', '[Notes] Quick Switch' },
-    c = { '<cmd>ObsidianNew<cr>', '[Notes] Create new' },
-    e = { '<cmd>ObsidianSearch<cr>', '[Notes] Search all' },
+    n = {
+      name = '[N]otes',
+      q = { '<cmd>ObsidianQuickSwitch<cr>', 'Quick Switch' },
+      c = { '<cmd>ObsidianNew<cr>', 'Create new' },
+      s = { '<cmd>ObsidianSearch<cr>', 'Search all' },
+    },
 
     -- journal
-    j = { '<cmd>ObsidianYesterday<cr>', '[Journal] Yesterday' },
-    k = { '<cmd>ObsidianToday<cr>', '[Journal] Today' },
-    l = { '<cmd>ObsidianTomorrow<cr>', '[Journal] Tomorrow' },
+    j = {
+      name = '[J]ournal',
+      y = { '<cmd>ObsidianYesterday<cr>', 'Yesterday' },
+      t = { '<cmd>ObsidianToday<cr>', 'Today' },
+      o = { '<cmd>ObsidianTomorrow<cr>', 'Tomorrow' },
+    },
 
     -- links
-    m = { '<cmd>ObsidianBacklinks<cr>', '[Links] Show location list of backlinks' },
-    n = { '<cmd>ObsidianFollowLink<cr>', '[Links] Follow under cursor' },
-    o = { '<cmd>ObsidianLinks<cr>', '[Links] Show all links' },
+    l = {
+      name = '[L]inks',
+      m = { '<cmd>ObsidianBacklinks<cr>', 'Show location list of backlinks' },
+      n = { '<cmd>ObsidianFollowLink<cr>', 'Follow under cursor' },
+      o = { '<cmd>ObsidianLinks<cr>', 'Show all links' },
+    },
 
-    -- templates
+    -- templates, tags and workspaces
     t = { '<cmd>ObsidianTemplate<cr>', 'Templates' },
     p = { '<cmd>ObsidianTags<cr>', 'Tags' },
     w = { '<cmd>ObsidianWorkspace<cr>', 'Workspaces' },
