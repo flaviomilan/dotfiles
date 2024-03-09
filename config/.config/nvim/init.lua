@@ -1,66 +1,126 @@
+-- [[ Install `lazy.nvim` plugin manager ]]
+local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system {
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable', -- latest stable release
+    lazypath,
+  }
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- [[ Configure and install plugins ]]
 require 'haxtof'
+require('lazy').setup 'haxtof.plugins'
 
--- Set <space> as the leader key
--- See `:help mapleader`
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+require('obsidian').setup {
 
--- [[ Setting options ]]
--- See `:help vim.opt`
+  workspaces = {
+    {
+      name = 'Zettelkasten',
+      path = '~/zettelkasten/',
+    },
+  },
 
--- set conceallevel
-vim.opt.conceallevel = 1
+  completion = {
+    nvim_cmp = true,
+    min_chars = 2,
+  },
 
--- Make line numbers default
-vim.opt.number = true
-vim.opt.relativenumber = true
+  -- Directories config
+  notes_subdir = 'zettel/',
+  new_notes_location = 'notes_subdir',
 
--- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = 'a'
+  daily_notes = {
+    folder = 'journal/',
+    date_format = '%Y-%m-%d',
+    alias_format = '%B %-d, %Y',
+    template = nil,
+  },
 
--- Don't show the mode, since it's already in status line
-vim.opt.showmode = false
+  templates = {
+    subdir = 'templates/',
+    date_format = '%Y-%m-%d-%a',
+    time_format = '%H:%M',
+    tags = '',
+  },
 
--- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+  -- UI config
+  ui = {
+    enable = true,
+    update_debounce = 200,
+    checkboxes = {
+      [' '] = { char = '󰄱', hl_group = 'ObsidianTodo' },
+      ['x'] = { char = '', hl_group = 'ObsidianDone' },
+      ['>'] = { char = '', hl_group = 'ObsidianRightArrow' },
+      ['~'] = { char = '󰰱', hl_group = 'ObsidianTilde' },
+    },
+    bullets = { char = '•', hl_group = 'ObsidianBullet' },
+    external_link_icon = { char = '', hl_group = 'ObsidianExtLinkIcon' },
+    reference_text = { hl_group = 'ObsidianRefText' },
+    highlight_text = { hl_group = 'ObsidianHighlightText' },
+    tags = { hl_group = 'ObsidianTag' },
+    hl_groups = {
+      ObsidianTodo = { bold = true, fg = '#f78c6c' },
+      ObsidianDone = { bold = true, fg = '#89ddff' },
+      ObsidianRightArrow = { bold = true, fg = '#f78c6c' },
+      ObsidianTilde = { bold = true, fg = '#ff5370' },
+      ObsidianBullet = { bold = true, fg = '#89ddff' },
+      ObsidianRefText = { underline = true, fg = '#c792ea' },
+      ObsidianExtLinkIcon = { fg = '#c792ea' },
+      ObsidianTag = { italic = true, fg = '#89ddff' },
+      ObsidianHighlightText = { bg = '#75662e' },
+    },
+  },
 
--- Enable break indent
-vim.opt.breakindent = true
+  -- Attachments
+  attachments = {
+    img_folder = 'assets/imgs',
+    img_text_func = function(client, path)
+      local link_path
+      local vault_relative_path = client:vault_relative_path(path)
+      if vault_relative_path ~= nil then
+        link_path = vault_relative_path
+      else
+        link_path = tostring(path)
+      end
+      local display_name = vim.fs.basename(link_path)
+      return string.format('![%s](%s)', display_name, link_path)
+    end,
+  },
 
--- Save undo history
-vim.opt.undofile = true
+  note_frontmatter_func = function(note)
+    local out = { id = note.id, aliases = note.aliases, tags = note.tags, area = '', project = '' }
+    if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+      for k, v in pairs(note.metadata) do
+        out[k] = v
+      end
+    end
+    return out
+  end,
 
--- Case-insensitive searching UNLESS \C or capital in search
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
+  note_id_func = function(title)
+    local suffix = ''
+    if title ~= nil then
+      suffix = title:gsub(' ', '-'):gsub('[^A-Za-z0-9-]', ''):lower()
+    else
+      for _ = 1, 4 do
+        suffix = suffix .. string.char(math.random(65, 90))
+      end
+    end
+    return tostring(os.time()) .. '-' .. suffix
+  end,
 
--- Keep signcolumn on by default
-vim.opt.signcolumn = 'yes'
-
--- Decrease update time
-vim.opt.updatetime = 250
-vim.opt.timeoutlen = 300
-
--- Configure how new splits should be opened
-vim.opt.splitright = true
-vim.opt.splitbelow = true
-
--- Sets how neovim will display certain whitespace in the editor.
---  See `:help 'list'`
---  and `:help 'listchars'`
-vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-
--- Preview substitutions live, as you type!
-vim.opt.inccommand = 'split'
-
--- Show which line your cursor is on
-vim.opt.cursorline = true
-
--- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
+  wiki_link_func = function(opts)
+    if opts.id == nil then
+      return string.format('[[%s]]', opts.label)
+    elseif opts.label ~= opts.id then
+      return string.format('[[%s|%s]]', opts.id, opts.label)
+    else
+      return string.format('[[%s]]', opts.id)
+    end
+  end,
+}

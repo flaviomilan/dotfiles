@@ -2,10 +2,11 @@
 
 programming_languages=(
     "java 21.0.2-amzn"
-    "groovy 4.0.15"
-    "gradle 8.4"
-    "maven 3.9.5"
-    "kotlin 1.9.10"
+    "groovy 4.0.19"
+    "gradle 8.6"
+    "maven 3.9.6"
+    "kotlin 1.9.23"
+    "quarkus 3.8.2"
 )
 
 load_sdkman_env() {
