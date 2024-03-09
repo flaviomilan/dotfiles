@@ -43,6 +43,7 @@ alias tx='tmux'
 alias txs='tmux new-session -s'
 alias txl='tmux list-sessions'
 alias txa='tmux attach-session -t'
+alias txk='tmux kill-server -a'
 
 
 # --------------------------------------------------
