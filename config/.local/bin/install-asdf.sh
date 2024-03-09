@@ -7,6 +7,8 @@ programming_languages=(
     "lua latest"
     "pnpm latest"
     "bun latest"
+    "ruby latest"
+    "julia latest"
 )
 
 # Check if ASDF is installed

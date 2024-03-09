@@ -2,6 +2,8 @@
 local configs = {
   require 'haxtof.configs.obsidian',
   require 'haxtof.configs.java',
+  require 'haxtof.configs.lsp',
+  require 'haxtof.configs.which_key',
 }
 
 -- Return the aggregated plugin specifications

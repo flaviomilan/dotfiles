@@ -1,129 +1,40 @@
-require('which-key').register {
-  -- INFO: Navigation
-  ['<leader>n'] = {
-    name = '[N]avigate',
-    e = { vim.cmd.Ex, 'Explorer' },
-  },
+-- [[ Basic Keymaps ]]
+--  See `:help vim.keymap.set()`
 
-  -- INFO: Marreta binds
-  -- Binds referente às marretadas da vida de dev
-  ['<leader>m'] = {
-    name = '[M]arreta',
-    m = { '<cmd>%s/\\v(.+)/"\\1",/<CR>', '"word", each line' },
-    n = { '<cmd>%s/\\n\\|\\s\\+/", "/g | %s/\\v^(.*[^ ]) *$/\\"\\1\\"/g<CR>', '"word", same line' },
-  },
+-- Set highlight on search, but clear on pressing <Esc> in normal mode
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
-  -- INFO: Obidisian binds
-  -- Binds utilizados em conjunto com o plugin `obsidian.nvim`
-  ['<leader>o'] = {
-    name = '[O]bsidian',
+-- Diagnostic keymaps
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
-    -- notes
-    n = {
-      name = '[N]otes',
-      q = { '<cmd>ObsidianQuickSwitch<cr>', 'Quick Switch' },
-      c = { '<cmd>ObsidianNew<cr>', 'Create new' },
-      s = { '<cmd>ObsidianSearch<cr>', 'Search all' },
-    },
+-- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
+-- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
+-- is not what someone will guess without a bit more experience.
+--
+-- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
+-- or just use <C-\><C-n> to exit terminal mode
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
-    -- journal
-    j = {
-      name = '[J]ournal',
-      y = { '<cmd>ObsidianYesterday<cr>', 'Yesterday' },
-      t = { '<cmd>ObsidianToday<cr>', 'Today' },
-      o = { '<cmd>ObsidianTomorrow<cr>', 'Tomorrow' },
-    },
+-- TIP: Disable arrow keys in normal mode
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
-    -- links
-    l = {
-      name = '[L]inks',
-      m = { '<cmd>ObsidianBacklinks<cr>', 'Show location list of backlinks' },
-      n = { '<cmd>ObsidianFollowLink<cr>', 'Follow under cursor' },
-      o = { '<cmd>ObsidianLinks<cr>', 'Show all links' },
-    },
+-- Keybinds to make split navigation easier.
+--  Use CTRL+<hjkl> to switch between windows
+--
+--  See `:help wincmd` for a list of all window commands
+vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
-    -- templates, tags and workspaces
-    t = { '<cmd>ObsidianTemplate<cr>', 'Templates' },
-    p = { '<cmd>ObsidianTags<cr>', 'Tags' },
-    w = { '<cmd>ObsidianWorkspace<cr>', 'Workspaces' },
-  },
-
-  -- INFO: Git binds
-  -- Binds utilizado em conjunto com o plugin `octo.nvim`
-  ['<leader>g'] = {
-    name = '[G]it',
-    g = {
-      name = '[G]ithub',
-      a = { '<cmd>Octo actions<cr>', 'Octo Actions' },
-      i = {
-        name = 'Issues',
-        c = { '<cmd>Octo issue close<cr>', 'Close current issue' },
-        r = { '<cmd>Octo issue reopen<cr>', 'Reopen current issue' },
-        a = { '<cmd>Octo issue create<cr>', 'Create new issue' },
-        e = { '<cmd>Octo issue edit<cr>', 'Edit issue' },
-        l = { '<cmd>Octo issue list<cr>', 'List issues' },
-        s = { '<cmd>Octo issue search<cr>', 'Search issue' },
-        t = { '<cmd>Octo issue reload<cr>', 'Reload issue' },
-        b = { '<cmd>Octo issue browser<cr>', 'Open current issue in the browser' },
-        u = { '<cmd>Octo issue url<cr>', 'Copies the URL of the current issue' },
-      },
-      p = {
-        name = "PR's",
-        l = { '<cmd>Octo pr list<cr>', "List all PR's" },
-        s = { '<cmd>Octo pr search<cr>', 'Search' },
-        e = { '<cmd>Octo pr edit<cr>', 'Edit PR' },
-        r = { '<cmd>Octo pr reopen<cr>', 'Reopen the current PR' },
-        c = { '<cmd>Octo pr create<cr>', 'Create a new PR' },
-        x = { '<cmd>Octo pr close<cr>', 'Close current PR' },
-        z = { '<cmd>Octo pr checkout<cr>', 'Checkout PR' },
-        t = { '<cmd>Octo pr commits<cr>', 'List all PR commits' },
-        g = { '<cmd>Octo pr changes<cr>', 'Show all PR changes' },
-        d = { '<cmd>Octo pr diff<cr>', 'Show PR diff' },
-        y = { '<cmd>Octo pr ready<cr>', 'Mark draft PR as ready' },
-        u = { '<cmd>Octo pr draft<cr>', 'Mark ready PR as draft' },
-        k = { '<cmd>Octo pr checks<cr>', 'Show the status of all checks' },
-        j = { '<cmd>Octo pr reload<cr>', 'Reload PR' },
-        b = { '<cmd>Octo pr browser<cr>', 'Open current PR in the browser' },
-        p = { '<cmd>Octo pr url<cr>', 'Copy the URL of the current PR' },
-      },
-      r = {
-        name = 'Repository',
-        l = { '<cmd>Octo repo list<cr>', 'List repositories' },
-        z = { '<cmd>Octo repo fork<cr>', 'Fork repository' },
-        b = { '<cmd>Octo repo browser<cr>', 'Open in browser' },
-        u = { '<cmd>Octo repo url<cr>', 'Copy url of current repo' },
-        v = { '<cmd>Octo repo view<cr>', 'Open repo by path {org}/{repo}' },
-      },
-      q = { '<cmd>Octo reviewer add<cr>', 'Add reviewer' },
-      o = {
-        name = 'Reaction',
-        u = { '<cmd>Octo reaction thumbs_up<cr>', 'Add 👍 reaction' },
-        d = { '<cmd>Octo reaction thumbs_down<cr>', 'Add 👎 reaction' },
-        e = { '<cmd>Octo reaction eyes<cr>', 'Add 👀 reaction' },
-        l = { '<cmd>Octo reaction laugh<cr>', 'Add 😄 reaction' },
-        c = { '<cmd>Octo reaction confused<cr>', 'Add 😕 reaction' },
-        r = { '<cmd>Octo reaction rocket<cr>', 'Add 🚀 reaction' },
-        h = { '<cmd>Octo reaction heart<cr>', 'Add ❤️  reaction' },
-        t = { '<cmd>Octo reaction tada<cr>', 'Add 🎉 reaction' },
-      },
-      e = {
-        name = 'Reviews',
-        s = { '<cmd>Octo review start<cr>', 'Start review' },
-        d = { '<cmd>Octo review submit<cr>', 'Submit review' },
-        r = { '<cmd>Octo review resume<cr>', 'Resume pending review' },
-        t = { '<cmd>Octo review discard<cr>', 'Deletes a pending review' },
-        p = { '<cmd>Octo review commit<cr>', 'Pick a specific commit' },
-        c = { '<cmd>Octo review close<cr>', 'Close the review window' },
-      },
-    },
-  },
-
-  -- INFO: Projects binds
-  -- Binds utilizados em conjunto com o plugin `neovim-project`
-  ['<leader>p'] = {
-    name = '[P]rojects',
-    d = { '<cmd>Telescope neovim-project discover<cr>', 'Find projects' },
-    h = { '<cmd>Telescope neovim-project history<cr>', 'History' },
-    l = { '<cmd>NeovimProjectLoadRecent<cr>', 'Load recent' },
-  },
-}
+-- resize keybinds
+vim.keymap.set('n', '<C-u>', '<C-w><C->>', { desc = 'Increase widht' })
+vim.keymap.set('n', '<C-i>', '<C-w><C-+>', { desc = 'Increase height' })
+vim.keymap.set('n', '<C-o>', '<C-w><C-->', { desc = 'Decrease height' })
+vim.keymap.set('n', '<C-p>', '<C-w><C-<>', { desc = 'Decrease width' })

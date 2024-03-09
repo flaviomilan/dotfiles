@@ -1,5 +1,4 @@
 require 'haxtof.remap'
+require 'haxtof.autocommands'
+require 'haxtof.lazy'
 require 'haxtof.configs'
-
--- NOTE: ignoring import of plugins
--- require 'haxtof.plugins'
