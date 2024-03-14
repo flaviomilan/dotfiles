@@ -1,5 +1,3 @@
---[[ Basic Keymaps ]]
-
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
@@ -32,3 +30,4 @@ vim.keymap.set('n', '<C-u>', '<C-w><C->>', { desc = 'Increase widht' })
 vim.keymap.set('n', '<C-i>', '<C-w><C-+>', { desc = 'Increase height' })
 vim.keymap.set('n', '<C-o>', '<C-w><C-->', { desc = 'Decrease height' })
 vim.keymap.set('n', '<C-p>', '<C-w><C-<>', { desc = 'Decrease width' })
+
