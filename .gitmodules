@@ -1,0 +1,3 @@
+[submodule "utils/recipes"]
+	path = utils/recipes
+	url = git@github.com:flaviomilan/recipes.git
