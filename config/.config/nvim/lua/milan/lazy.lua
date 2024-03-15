@@ -60,14 +60,26 @@ local plugins = {
 		"numToStr/Comment.nvim",
 		lazy = false,
 	},
+
+	-- INFO: Telescope
 	{
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.4",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"joshmedeski/telescope-smart-goto.nvim",
+			'nvim-telescope/telescope-ui-select.nvim'
 		},
 	},
+
+	-- INFO: LSP
+	{'williamboman/mason.nvim'},
+	{'williamboman/mason-lspconfig.nvim'},
+	{ "VonHeikemen/lsp-zero.nvim", branch = "v3.x" },
+	{ "neovim/nvim-lspconfig" },
+	{ "hrsh7th/cmp-nvim-lsp" },
+	{ "hrsh7th/nvim-cmp" },
+	{ "L3MON4D3/LuaSnip" },
 }
 
 require("lazy").setup(plugins, {

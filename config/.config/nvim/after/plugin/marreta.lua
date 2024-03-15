@@ -1,5 +1,4 @@
 local wk = require("which-key")
-
 wk.register({
 	["<leader>m"] = {
 		m = { '<cmd>%s/\\v(.+)/"\\1",/<CR>', '"word", each line' },

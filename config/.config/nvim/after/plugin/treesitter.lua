@@ -23,6 +23,8 @@ require("nvim-treesitter.configs").setup({
 		"bash",
 		"ruby",
 		"markdown",
+		"regex",
+		"markdown_inline",
 	},
 	sync_install = false,
 	highlight = { enable = true },

@@ -1,5 +1,4 @@
 local conform = require("conform")
-
 conform.setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
@@ -9,17 +8,18 @@ conform.setup({
 		typescriptreact = { { "prettierd", "prettier" } },
 		json = { { "prettierd", "prettier" } },
 		graphql = { { "prettierd", "prettier" } },
+		css = { { "prettierd", "prettier" } },
+		scss = { { "prettierd", "prettier" } },
 		java = { "google-java-format" },
 		kotlin = { "ktlint" },
 		markdown = { { "prettierd", "prettier" } },
-		html = { "htmlbeautifier" },
+		html = {},
 		bash = { "beautysh" },
 		proto = { "buf" },
 		rust = { "rustfmt" },
 		yaml = { "yamlfix" },
 		toml = { "taplo" },
-		css = { { "prettierd", "prettier" } },
-		scss = { { "prettierd", "prettier" } },
+		python = { "isort", "black" },
 	},
 })
 
