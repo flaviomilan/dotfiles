@@ -48,7 +48,7 @@ alias tx='tmux'
 alias txs='tmux new-session -s'
 alias txl='tmux list-sessions'
 alias txa='tmux attach-session -t'
-alias txk='tmux kill-server -a'
+alias txk='tmux kill-server'
 
 # grep
 alias rgsearch="rg --ignore-case --smart-case --line-number --column --no-heading"
