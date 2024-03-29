@@ -23,6 +23,12 @@ ASDF_COMPLETIONS="$HOME/.asdf/completions/asdf.bash"
 [[ -f "$ASDF_SH" ]] && . "$ASDF_SH"
 [[ -f "$ASDF_COMPLETIONS" ]] && . "$ASDF_COMPLETIONS"
 
+# tfenv - terraform
+TFENV_DIR="$HOME/.tfenv/bin"
+if [[ -d "$TFENV_DIR" ]]; then
+	export PATH=$PATH:"$TFENV_DIR"
+fi
+
 # golang
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
