@@ -30,6 +30,12 @@ ASDF_COMPLETIONS="$HOME/.asdf/completions/asdf.bash"
 [[ -f "$ASDF_SH" ]] && . "$ASDF_SH"
 [[ -f "$ASDF_COMPLETIONS" ]] && . "$ASDF_COMPLETIONS"
 
+# tfenv - terraform
+TFENV_DIR="$HOME/.tfenv/bin"
+if [[ -d "$TFENV_DIR" ]]; then
+	export PATH=$PATH:"$TFENV_DIR"
+fi
+
 # golang
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
@@ -58,8 +64,9 @@ alias txk='tmux kill-server'
 # Git
 alias gtc='git commit'
 alias gtca='git commit --amend --no-edit'
-alias gts='git stash'
-alias gtsa='git stash --include-untracked'
+alias gts='git status'
+alias gtsh='git stash'
+alias gtsha='git stash --include-untracked'
 alias gtpu='git pull'
 alias gtps='git push'
 
