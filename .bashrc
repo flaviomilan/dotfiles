@@ -35,6 +35,8 @@ source "$HOME/.cargo/env"
 # startship shell
 eval "$(starship init bash)"
 
+export DOCKER_HOST=unix://${HOME}/.colima/default/docker.sock
+
 # --------------------------------------------------
 # Aliases
 # Define custom command aliases for convenience

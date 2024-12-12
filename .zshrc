@@ -16,6 +16,13 @@ if [[ -f "$SDKMAN_INIT_SCRIPT" ]]; then
 	[[ -s "$SDKMAN_INIT_SCRIPT" ]] && source "$SDKMAN_INIT_SCRIPT"
 fi
 
+# mise
+# https://github.com/jdx/mise
+MISE_BIN="$HOME/.local/bin/mise"
+if [[ -f "$MISE_BIN" ]]; then
+  eval "$MISE_BIN activate zsh"
+fi
+
 # asdf - universal language manager
 ASDF_SH="$HOME/.asdf/asdf.sh"
 ASDF_COMPLETIONS="$HOME/.asdf/completions/asdf.bash"
@@ -47,6 +54,14 @@ alias txs='tmux new-session -s'
 alias txl='tmux list-sessions'
 alias txa='tmux attach-session -t'
 alias txk='tmux kill-server'
+
+# Git
+alias gtc='git commit'
+alias gtca='git commit --amend --no-edit'
+alias gts='git stash'
+alias gtsa='git stash --include-untracked'
+alias gtpu='git pull'
+alias gtps='git push'
 
 # --------------------------------------------------
 # Shell Options
