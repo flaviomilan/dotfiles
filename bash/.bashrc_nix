@@ -1,0 +1,8 @@
+# --------------------------------------------------
+# Linux Configuration
+
+if [[ -x ~/.local/bin/mise ]]; then
+  eval "$(~/.local/bin/mise activate bash)"
+else
+  echo "mise não encontrado ou não é executável"
+fi
