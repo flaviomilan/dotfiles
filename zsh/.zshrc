@@ -1,6 +1,5 @@
 # --------------------------------------------------
 # Common zsh config
-#
 
 # --------------------------------------------------
 # Setup
@@ -44,6 +43,7 @@ alias gt="git"
 alias ga="git add ."
 alias gs="git status -s"
 alias gc='git commit -m'
+alias gk='git checkout'
 alias gp='git pull origin main --rebase'
 alias glog='git log --oneline --graph --all'
 
