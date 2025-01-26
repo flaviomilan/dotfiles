@@ -2,6 +2,7 @@
 # Common zsh config
 #
 
+# --------------------------------------------------
 # Setup
 
 # fzf
@@ -19,6 +20,9 @@ source ~/.tools/fzf-git.sh
 
 # zoxide
 eval "$(zoxide init zsh)"
+
+# starship
+eval "$(starship init zsh)"
 
 # --------------------------------------------------
 # Aliases
@@ -50,8 +54,6 @@ alias glog='git log --oneline --graph --all'
 # --------------------------------------------------
 # Miscellaneous
 # Any other configurations or commands you want to add
-
-PS1='[%F{green}%n@%m %F{white}%~]%F{green}%$%f '
 
 # --------------------------------------------------
 # Functions

@@ -15,6 +15,7 @@ Here's the squad of tools that'll supercharge your terminal:
 - **eza**: `ls` on steroids. A modern twist on listing files.
 - **git-fzf**: Git + fzf = pure joy. Navigate your Git history like a boss.
 - **lazygit**: A Git UI that’s so simple, you’ll wonder why you ever used Git the old way.
+- **starship**: ☄🌌️ The minimal, blazing-fast, and infinitely customizable prompt for any shell!
 
 ## 🎮 Keymap
 
@@ -61,6 +62,10 @@ These aliases are designed to save you time and make your terminal experience ev
 #### Getting rid of the ugly title bar 💩
 
 iTerm2 Preferences: `Appearance` > `General` > `Theme: Minimal`
+
+#### Hide scrollbars
+
+iTerm2 Preferences: `Appearance` > `Windows` > `Hide scrollbars`
 
 #### Install Snazzy theme
 

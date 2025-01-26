@@ -2,6 +2,7 @@
 # Common bash config
 #
 
+# --------------------------------------------------
 # Setup
 
 # fzf
@@ -19,6 +20,9 @@ source ~/.tools/fzf-git.sh
 
 # zoxide
 eval "$(zoxide init bash)"
+
+# starship
+eval "$(starship init bash)"
 
 # --------------------------------------------------
 # Aliases
@@ -58,8 +62,6 @@ shopt -s checkwinsize   # checks term size when bash regains control
 # --------------------------------------------------
 # Miscellaneous
 # Any other configurations or commands you want to add
-
-PS1='\[\e[1;32m\][\u@\h \e[37m\w\e[1;32m]\$\[\e[0m\] '
 
 # --------------------------------------------------
 # Functions
