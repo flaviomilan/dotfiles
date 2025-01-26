@@ -4,7 +4,7 @@
 # mise - configuration
 # https://github.com/jdx/mise
 if [[ -x ~/.local/bin/mise ]]; then
-  eval "$(~/.local/bin/mise activate bash)"
+  eval "$(~/.local/bin/mise activate zsh)"
 else
   echo "mise não encontrado ou não é executável"
 fi
