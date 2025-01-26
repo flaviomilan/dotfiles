@@ -1,18 +1,6 @@
 [user]
-    name = 
-    email = 
-    signinkey = 
+    name = Flávio Milan 
+    email = oflaviomilan@gmail.com
 
 [core]
     editor = nvim
-
-[commit]
-    gpgsign = true
-
-[alias]
-    st = stash --all
-    unstage = restore --staged . 
-    f = "!git ls-files | grep -i"
-    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
-    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-    df = diff --word-diff

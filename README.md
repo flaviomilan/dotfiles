@@ -39,6 +39,7 @@ Here’s where the real fun begins: key bindings and shortcuts to make you feel 
 * <kbd>CTRL-G</kbd><kbd>CTRL-E</kbd> for **E**ach ref (`git for-each-ref`)
 
 ## 🛠️ Aliases
+
 These aliases are designed to save you time and make your terminal experience even smoother:
 
 - `tree` → View your directories like a pro
@@ -46,6 +47,7 @@ These aliases are designed to save you time and make your terminal experience ev
 - `lg` → Because who doesn’t want a simple Git UI?
 
 ### git
+
 - `ga` → git add . (Add all the things)
 - `gs` → git status -s (Quick status, because you’re efficient)
 - `gc` → git commit -m (Commit messages made easy)
@@ -53,6 +55,20 @@ These aliases are designed to save you time and make your terminal experience ev
 - `glog` → See all your commits with style
 
 ## 🛠️ Setup
+
+### Mac - iTerm2 theme
+
+#### Getting rid of the ugly title bar 💩
+
+iTerm2 Preferences: `Appearance` > `General` > `Theme: Minimal`
+
+#### Install Snazzy theme
+
+```bash
+(curl -Ls https://raw.githubusercontent.com/sindresorhus/iterm2-snazzy/main/Snazzy.itermcolors > /tmp/Snazzy.itermcolors && open /tmp/Snazzy.itermcolors)
+```
+
+iTerm2 Preferences: `Profiles` > `Color` > `Colo Presets: Snazzy`
 
 ## 📜 License
 
