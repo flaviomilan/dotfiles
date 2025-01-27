@@ -1,6 +1,3 @@
 [user]
-    name = Flávio Milan 
-    email = oflaviomilan@gmail.com
-
-[core]
-    editor = nvim
+	email = oflaviomilan@gmail.com
+	name = Flavio Milan

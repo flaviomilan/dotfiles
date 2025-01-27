@@ -1,6 +1,6 @@
 #!/bin/bash
 
-instalar_gum() {
+install_gum() {
     OS=$(uname -s)
 
     if [[ "$OS" == "Linux" ]]; then
