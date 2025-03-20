@@ -45,16 +45,12 @@ check_and_install() {
         ;;
       "mise")
         curl https://mise.run | sh
-	    ;;
-      "discord" | "obsidian" | "fzf" | "fd" | "bat" | "eza" | "tldr" | "neovim" | "lazygit" | "zsh")
-        install_package "$app"
         ;;
       "zoxide")
         curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash > /dev/null
         ;;
       *)
-        echo "Unknown app: $app"
-        return 1
+        install_package "$app"
         ;;
     esac
   else

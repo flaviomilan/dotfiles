@@ -43,6 +43,7 @@ for app in "${required_apps[@]}"; do
     install_and_configure "$app"
 done
 
+apply_stow_config "$config_dir" "bash" >/dev/null
 apply_stow_config "$config_dir" "tools" >/dev/null
 
 # --------------------------
