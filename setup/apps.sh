@@ -16,6 +16,21 @@ install_package() {
   fi
 }
 
+install_1password() {
+  if command -v apt &> /dev/null; then
+    # Ubuntu/Debian-based systems
+    sudo apt install -y -qq "$package_name"
+  elif command -v pacman &> /dev/null; then
+    # Arch-based systems
+    curl -sS https://downloads.1password.com/linux/keys/1password.asc | gpg --import
+    git clone https://aur.archlinux.org/1password.git
+    cd 1password || exit
+    makepkg -si --noconfirm
+    cd ..
+    rm -rf 1password  # Removendo o diretório após a instalação
+  fi
+}
+
 check_and_install() {
   local app="$1"
 
@@ -23,12 +38,15 @@ check_and_install() {
     echo "Installing $app..."
     case "$app" in
       "starship")
-        curl -sS https://starship.rs/install.sh | sh > /dev/null
+        yes | curl -sS https://starship.rs/install.sh | sh > /dev/null
+        ;;
+      "1password")
+        install_1password
         ;;
       "mise")
         curl https://mise.run | sh
-	;;
-      "fzf" | "fd" | "bat" | "exa" | "tldr" | "neovim" | "lazygit" | "zsh")
+	    ;;
+      "discord" | "obsidian" | "fzf" | "fd" | "bat" | "eza" | "tldr" | "neovim" | "lazygit" | "zsh")
         install_package "$app"
         ;;
       "zoxide")

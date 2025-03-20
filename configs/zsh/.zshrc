@@ -12,7 +12,7 @@ export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git
 export FZF_DEFAULT_OPTS="--height 50% --layout=default --border --color=hl:#2dd4bf"
 export FZF_CTRL_T_OPTS="--preview 'bat --color=always -n --line-range :500 {}'"
 export FZF_ALT_C_OPTS="--preview 'eza --icons=always --tree --color=always {} | head -200'"
-export FZF_TMUX_OPTS=" -p90%,70% "  
+export FZF_TMUX_OPTS=" -p90%,70% "
 
 # fzf-git
 source ~/.tools/fzf-git.sh
@@ -48,8 +48,10 @@ alias gt="git"
 alias ga="git add ."
 alias gs="git status -s"
 alias gc='git commit -m'
+alias gca='git commit --amend --no-edit'
 alias gk='git checkout'
 alias gp='git pull origin main --rebase'
+alias gpf='git push --force-with-lease'
 alias glog='git log --oneline --graph --all'
 
 # --------------------------------------------------
@@ -73,3 +75,4 @@ if [[ "$(uname)" == "Darwin" ]]; then
 elif [[ "$(uname)" == "Linux" ]]; then
   source ~/.zshrc_nix
 fi
+
