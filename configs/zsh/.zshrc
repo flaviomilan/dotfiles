@@ -50,8 +50,13 @@ alias gs="git status -s"
 alias gc='git commit -m'
 alias gca='git commit --amend --no-edit'
 alias gk='git checkout'
-alias gp='git pull origin main --rebase'
-alias gpf='git push --force-with-lease'
+
+alias gpl='git pull'
+alias gplr='git pull --rebase'
+
+alias gps='git push'
+alias gpsf='git push --force-with-lease'
+
 alias glog='git log --oneline --graph --all'
 
 # --------------------------------------------------
