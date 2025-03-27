@@ -1,0 +1,7 @@
+[tools]
+go = "latest"
+kotlin = "latest"
+lua = "latest"
+node = "lts"
+ruby = "latest"
+rust = "latest"
