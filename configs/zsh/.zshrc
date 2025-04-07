@@ -81,3 +81,9 @@ elif [[ "$(uname)" == "Linux" ]]; then
   source ~/.zshrc_nix
 fi
 
+
+# Auto-start tmux if not already inside tmux
+if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+  tmux attach-session -t main || tmux new-session -s main
+fi
+
