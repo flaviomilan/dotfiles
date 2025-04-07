@@ -87,3 +87,7 @@ if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
   tmux attach-session -t main || tmux new-session -s main
 fi
 
+# GPG agent setup
+export GPG_TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null
+
