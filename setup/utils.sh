@@ -9,7 +9,7 @@ install_gum() {
         echo "Sistema Linux detectado..."
         if command -v pacman >/dev/null 2>&1; then
             echo "Pacman encontrado, instalando Gum..."
-            sudo pacman -S --noconfirm gum >/dev/null 2>&1
+            sudo pacman -S --noconfirm gum
             echo "Gum instalado com sucesso via Pacman!"
         elif command -v apt >/dev/null 2>&1; then
             echo "Apt encontrado, atualizando pacotes e instalando Gum..."
@@ -38,7 +38,7 @@ install_stow() {
         echo "Sistema Linux detectado..."
         if command -v pacman >/dev/null 2>&1; then
             echo "Pacman encontrado, instalando Stow..."
-            sudo pacman -S --noconfirm stow >/dev/null 2>&1
+            sudo pacman -S --noconfirm stow
             echo "Stow instalado com sucesso via Pacman!"
         elif command -v apt >/dev/null 2>&1; then
             echo "Apt encontrado, atualizando pacotes e instalando Stow..."

@@ -1,0 +1,13 @@
+neovim
+zsh
+fzf
+fd
+bat
+tldr
+zoxide
+eza
+starship
+mise
+lazygit
+github-cli
+tmux

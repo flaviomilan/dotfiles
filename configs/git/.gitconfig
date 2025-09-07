@@ -1,3 +1,6 @@
 [user]
-	email = oflaviomilan@gmail.com
-	name = Flavio Milan
+  # Fetch Git credentials from 1Password
+  # Replace <your_vault> with the name of your 1Password vault (e.g., Private, Shared)
+  # Replace <item_name> with the name of the item where you stored your credentials (e.g., Git Config)
+  name = !op read "op://<your_vault>/<item_name>/username" --no-newline
+  email = !op read "op://<your_vault>/<item_name>/password" --no-newline

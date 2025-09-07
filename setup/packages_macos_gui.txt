@@ -1,0 +1,5 @@
+font-jetbrains-mono-nerd
+ghostty
+obsidian
+discord
+1password

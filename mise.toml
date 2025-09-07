@@ -1,3 +1,66 @@
 [tools]
+go = "latest"
 lua = "5.1"
+node = "lts"
 rust = "latest"
+python = "latest"
+terraform = "latest"
+java = "temurin-21"
+kotlin = "latest"
+groovy = "latest"
+maven = "latest"
+
+# Defines common script aliases. You can run them with `mise run <task_name>`.
+# ex: mise run test
+[tasks.test]
+description = "Run tests for the current project"
+run = '''
+if [ -f "package.json" ]; then
+  npm test
+elif [ -f "Cargo.toml" ]; then
+  cargo test
+elif [ -f "go.mod" ]; then
+  go test ./...
+else
+  echo "No test command found for this project." >&2
+  exit 1
+fi
+'''
+
+[tasks.lint]
+description = "Lint the current project"
+run = '''
+if [ -f "package.json" ]; then
+  npm run lint
+elif [ -f "Cargo.toml" ]; then
+  cargo clippy
+elif [ -f "go.mod" ]; then
+  golangci-lint run
+elif [ -n "$(ls *.tf 2>/dev/null)" ]; then
+  tflint --recursive
+else
+  echo "No lint command found for this project." >&2
+  exit 1
+fi
+'''
+
+[tasks.start]
+description = "Run the main application for the current project"
+run = '''
+if [ -f "package.json" ]; then
+  npm run start
+elif [ -f "Cargo.toml" ]; then
+  cargo run
+elif [ -f "go.mod" ]; then
+  go run .
+else
+  echo "No start command found for this project." >&2
+  exit 1
+fi
+'''
+
+# Sets environment variables automatically.
+# These are applied globally from this file but can be overridden by project-specific .mise.toml files.
+[env]
+GOPATH = "~/go"
+NODE_ENV = "development"
