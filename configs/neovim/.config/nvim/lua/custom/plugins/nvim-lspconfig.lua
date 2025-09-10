@@ -9,6 +9,12 @@ return {
       'j-hui/fidget.nvim', -- LSP progress notifications
     },
     config = function()
+      -- Apply emergency LSP fixes first (highest priority)
+      require('custom.utils.lsp-emergency-fix').setup()
+      
+      -- Setup universal LSP client fixes
+      require('custom.utils.lsp-client-fix').setup()
+      
       -- Setup fidget for LSP progress
       require('fidget').setup({})
 
@@ -71,56 +77,140 @@ return {
         },
       })
 
-      -- Groovy Language Server
-      lspconfig.groovyls.setup({
-        cmd = function()
-          local mason_path = vim.fn.stdpath('data') .. '/mason'
-          local groovy_executable = mason_path .. '/packages/groovy-language-server/groovy-language-server'
-          
-          -- Check if Mason executable exists
-          if vim.fn.executable(groovy_executable) == 1 then
-            return { groovy_executable }
-          end
-          
-          -- Fallback to JAR file directly
-          local jar_path = mason_path .. '/packages/groovy-language-server/build/libs/groovy-language-server-all.jar'
-          if vim.fn.filereadable(jar_path) == 1 then
-            return { 'java', '-jar', jar_path }
-          end
-          
-          -- Final fallback
-          return { 'groovy-language-server' }
-        end,
-        capabilities = capabilities,
-        filetypes = { 'groovy' },
-        root_dir = function(fname)
-          return lspconfig.util.root_pattern(
-            'pom.xml',           -- Maven projects
-            'build.gradle',      -- Gradle projects
-            'build.gradle.kts',
-            'settings.gradle',
-            'settings.gradle.kts',
-            'gradlew',
-            'Jenkinsfile',       -- Jenkins pipelines
-            '.git'               -- Git repositories
-          )(fname) or lspconfig.util.find_git_ancestor(fname) or vim.fn.getcwd()
-        end,
-        settings = {
-          groovy = {
-            classpath = {},
-          },
-        },
-        init_options = {
+      -- Groovy Language Server with error handling
+      local groovy_setup_success, groovy_error = pcall(function()
+        lspconfig.groovyls.setup({
+          cmd = function()
+            local mason_path = vim.fn.stdpath('data') .. '/mason'
+            
+            -- Try JAR file first (most reliable)
+            local jar_path = mason_path .. '/packages/groovy-language-server/build/libs/groovy-language-server-all.jar'
+            if vim.fn.filereadable(jar_path) == 1 then
+              return { 
+                'java',
+                '--add-opens=java.base/java.lang=ALL-UNNAMED',
+                '--add-opens=java.base/java.util=ALL-UNNAMED',
+                '-Xmx512m',
+                '-jar', 
+                jar_path 
+              }
+            end
+            
+            -- Try executable
+            local groovy_executable = mason_path .. '/packages/groovy-language-server/groovy-language-server'
+            if vim.fn.executable(groovy_executable) == 1 then
+              return { groovy_executable }
+            end
+            
+            -- Final fallback
+            vim.notify("Groovy Language Server not found, using fallback", vim.log.levels.WARN)
+            return { 'groovy-language-server' }
+          end,
+          capabilities = capabilities,
+          filetypes = { 'groovy' },
+          root_dir = function(fname)
+            local root = lspconfig.util.root_pattern(
+              'build.gradle',      -- Gradle projects (prioritize)
+              'build.gradle.kts',
+              'settings.gradle',
+              'settings.gradle.kts',
+              'gradlew',
+              'pom.xml',           -- Maven projects
+              'Jenkinsfile',       -- Jenkins pipelines
+              '.git'               -- Git repositories
+            )(fname)
+            
+            if root then
+              return root
+            end
+            
+            -- Fallback to git ancestor or current directory
+            return lspconfig.util.find_git_ancestor(fname) or vim.fn.getcwd()
+          end,
           settings = {
             groovy = {
               classpath = {},
             },
           },
-        },
-        on_attach = function(client, bufnr)
-          print("Groovy LSP attached to buffer " .. bufnr .. " in " .. (client.config.root_dir or 'unknown'))
-        end,
-      })
+          init_options = {
+            settings = {
+              groovy = {
+                classpath = {},
+              },
+            },
+          },
+          on_attach = function(client, bufnr)
+            -- Enhanced error handling for on_attach
+            if client and client.server_capabilities then
+              vim.notify("Groovy LSP attached successfully to buffer " .. bufnr, vim.log.levels.INFO)
+            else
+              vim.notify("Groovy LSP attached but client capabilities missing", vim.log.levels.WARN)
+            end
+          end,
+          on_init = function(client, initialize_result)
+            vim.notify("Groovy LSP initialized", vim.log.levels.INFO)
+          end,
+          on_error = function(code, err)
+            vim.notify("Groovy LSP error: " .. (err or "unknown"), vim.log.levels.ERROR)
+          end,
+          handlers = {
+            -- Override default handlers to prevent nil access
+            ["textDocument/hover"] = function(err, result, ctx, config)
+              if not ctx or not ctx.client_id then
+                return
+              end
+              return vim.lsp.handlers["textDocument/hover"](err, result, ctx, config)
+            end,
+          }
+        })
+      end)
+      
+      if not groovy_setup_success then
+        vim.notify("Failed to setup Groovy LSP: " .. (groovy_error or "unknown error"), vim.log.levels.ERROR)
+      end
+      
+      -- Add command to restart Groovy LSP
+      vim.api.nvim_create_user_command("GroovyLspRestart", function()
+        require('custom.utils.lsp-client-fix').restart_groovy_lsp()
+        vim.notify("Groovy LSP restarted", vim.log.levels.INFO)
+      end, { desc = "Restart Groovy LSP" })
+      
+      -- Add command to restart all LSP clients
+      vim.api.nvim_create_user_command("LspClientRestart", function()
+        local clients = vim.lsp.get_clients()
+        for _, client in ipairs(clients) do
+          vim.notify("Restarting LSP: " .. client.name, vim.log.levels.INFO)
+          client.stop()
+        end
+        vim.defer_fn(function()
+          vim.cmd("LspStart")
+        end, 1000)
+      end, { desc = "Restart all LSP clients" })
+      
+      -- Add diagnostic command for LSP issues
+      vim.api.nvim_create_user_command("LspDiagnose", function()
+        local clients = vim.lsp.get_clients()
+        vim.notify("=== LSP Client Diagnosis ===", vim.log.levels.INFO)
+        
+        for _, client in ipairs(clients) do
+          local status = "Unknown"
+          local has_request = client.request and "✓" or "✗"
+          local is_stopped = "Unknown"
+          
+          if client.is_stopped then
+            is_stopped = client.is_stopped() and "✗ Stopped" or "✓ Running"
+          end
+          
+          vim.notify(string.format(
+            "Client: %s | Request: %s | Status: %s", 
+            client.name or "unnamed", 
+            has_request, 
+            is_stopped
+          ), vim.log.levels.INFO)
+        end
+        
+        vim.notify("=== End Diagnosis ===", vim.log.levels.INFO)
+      end, { desc = "Diagnose LSP client issues" })
 
       -- Global LSP keymaps (applied to all LSP clients)
       vim.api.nvim_create_autocmd('LspAttach', {

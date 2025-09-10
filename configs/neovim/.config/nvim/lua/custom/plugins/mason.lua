@@ -27,6 +27,22 @@ return {
         },
         automatic_installation = true,
       })
+      
+      -- Install additional tools if available
+      local mason_registry = require('mason-registry')
+      local tools_to_install = {
+        'spring-boot-tools',
+        'google-java-format',
+      }
+      
+      for _, tool in ipairs(tools_to_install) do
+        if mason_registry.has_package(tool) then
+          local pkg = mason_registry.get_package(tool)
+          if not pkg:is_installed() then
+            pkg:install()
+          end
+        end
+      end
     end,
   },
   {

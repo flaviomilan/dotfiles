@@ -13,6 +13,8 @@ return {
         adapters = {
           require('neotest-java')({
             ignore_wrapper = false, -- whether to ignore maven/gradle wrapper
+            -- Ensure neotest-java doesn't interfere with nvim-java JDTLS management
+            junit_jar = nil, -- Let nvim-java handle this
           }),
         },
         discovery = {
