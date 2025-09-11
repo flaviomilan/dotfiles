@@ -1,0 +1,43 @@
+return { -- Highlight, edit, and navigate code
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    main = 'nvim-treesitter.configs',
+    opts = {
+      ensure_installed = {
+        'bash',
+        'c',
+        'cpp',
+        'go',
+        'rust',
+        'lua',
+        'luadoc',
+        'python',
+        'java',
+        'kotlin',
+        'javascript',
+        'typescript',
+        'tsx',
+        'html',
+        'css',
+        'json',
+        'vue',
+        'yaml',
+        'markdown',
+        'markdown_inline',
+        'astro',
+        'vim',
+        'vimdoc',
+        'query',
+        'diff',
+      },
+      auto_install = true,
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = {},
+      },
+      indent = {
+        enable = true,
+        disable = { 'python' }, -- ou qualquer linguagem com indentação bugada
+      },
+    },
+  }
