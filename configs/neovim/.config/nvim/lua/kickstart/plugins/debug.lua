@@ -21,8 +21,10 @@ return {
     'williamboman/mason.nvim',
     'jay-babu/mason-nvim-dap.nvim',
 
-    -- Add your own debuggers here
-    'leoluz/nvim-dap-go',
+    -- Language specific debug adapters
+    'leoluz/nvim-dap-go',           -- Go
+    'mfussenegger/nvim-dap-python', -- Python
+    'theHamsta/nvim-dap-virtual-text', -- Virtual text for variables
   },
   keys = {
     -- Basic debugging keymaps, feel free to change to your liking!
@@ -93,8 +95,16 @@ return {
       -- You'll need to check that you have the required things installed
       -- online, please don't ask me how to install them :)
       ensure_installed = {
-        -- Update this to ensure that you have the debuggers for the langs you want
+        -- Go
         'delve',
+        -- Python
+        'debugpy',
+        -- JavaScript/TypeScript (Node.js)
+        'node-debug2-adapter',
+        -- C/C++
+        'codelldb',
+        -- Java (handled by nvim-jdtls)
+        -- 'java-debug-adapter',
       },
     }
 
@@ -136,7 +146,26 @@ return {
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
-    -- Install golang specific config
+    -- Setup virtual text for debugging
+    require('nvim-dap-virtual-text').setup {
+      enabled = true,
+      enabled_commands = true,
+      highlight_changed_variables = true,
+      highlight_new_as_changed = false,
+      show_stop_reason = true,
+      commented = false,
+      only_first_definition = true,
+      all_references = false,
+      filter_references_pattern = '<module',
+      virt_text_pos = 'eol',
+      all_frames = false,
+      virt_lines = false,
+      virt_text_win_col = nil,
+    }
+
+    -- Language specific setups
+
+    -- Go debugging
     require('dap-go').setup {
       delve = {
         -- On Windows delve must be run attached or it crashes.
@@ -144,5 +173,100 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    -- Python debugging
+    require('dap-python').setup '~/.local/share/nvim/mason/packages/debugpy/venv/bin/python'
+
+    -- Manual configuration for languages not handled by mason-nvim-dap
+
+    -- JavaScript/TypeScript (Node.js)
+    dap.adapters.node2 = {
+      type = 'executable',
+      command = 'node',
+      args = { vim.fn.stdpath 'data' .. '/mason/packages/node-debug2-adapter/out/src/nodeDebug.js' },
+    }
+
+    dap.configurations.javascript = {
+      {
+        name = 'Launch',
+        type = 'node2',
+        request = 'launch',
+        program = '${file}',
+        cwd = vim.fn.getcwd(),
+        sourceMaps = true,
+        protocol = 'inspector',
+        console = 'integratedTerminal',
+      },
+      {
+        name = 'Attach to process',
+        type = 'node2',
+        request = 'attach',
+        processId = require('dap.utils').pick_process,
+      },
+    }
+
+    dap.configurations.typescript = dap.configurations.javascript
+
+    -- C/C++ debugging
+    dap.adapters.codelldb = {
+      type = 'server',
+      port = '${port}',
+      executable = {
+        command = vim.fn.stdpath 'data' .. '/mason/packages/codelldb/extension/adapter/codelldb',
+        args = { '--port', '${port}' },
+      },
+    }
+
+    dap.configurations.cpp = {
+      {
+        name = 'Launch file',
+        type = 'codelldb',
+        request = 'launch',
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = '${workspaceFolder}',
+        stopOnEntry = false,
+      },
+    }
+
+    dap.configurations.c = dap.configurations.cpp
+    dap.configurations.rust = dap.configurations.cpp
+
+    -- Rust specific configuration (cargo)
+    table.insert(dap.configurations.rust, {
+      name = 'Launch Cargo',
+      type = 'codelldb',
+      request = 'launch',
+      program = function()
+        local output = vim.fn.system 'cargo build --message-format=json 2>/dev/null | jq -r "select(.target.kind[] == \\"bin\\") | .executable" | head -n1'
+        return vim.trim(output)
+      end,
+      cwd = '${workspaceFolder}',
+      stopOnEntry = false,
+      args = {},
+      runInTerminal = false,
+    })
+
+    -- Additional keymaps for better debugging experience
+    vim.keymap.set('n', '<leader>dR', function()
+      dap.clear_breakpoints()
+    end, { desc = 'Debug: Clear all breakpoints' })
+
+    vim.keymap.set('n', '<leader>dr', function()
+      dap.restart()
+    end, { desc = 'Debug: Restart' })
+
+    vim.keymap.set('n', '<leader>dl', function()
+      dap.list_breakpoints()
+    end, { desc = 'Debug: List breakpoints' })
+
+    vim.keymap.set('n', '<leader>dh', function()
+      require('dap.ui.widgets').hover()
+    end, { desc = 'Debug: Hover variables' })
+
+    vim.keymap.set('v', '<leader>dh', function()
+      require('dap.ui.widgets').visual_hover()
+    end, { desc = 'Debug: Hover selection' })
   end,
 }

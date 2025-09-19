@@ -9,28 +9,18 @@ return {
       default_file_explorer = true,
     }
 
+    -- Navigation no Oil usa smart-splits para integração consistente com tmux
     vim.api.nvim_create_autocmd('FileType', {
       pattern = 'oil',
       callback = function()
-        local function move_or_tmux(dir)
-          return function()
-            local key = ({ h = 'L', j = 'D', k = 'U', l = 'R' })[dir]
-            local curr_win = vim.api.nvim_get_current_win()
-            vim.cmd('wincmd ' .. dir)
-            local new_win = vim.api.nvim_get_current_win()
-
-            if curr_win == new_win then
-              vim.fn.system { 'tmux', 'select-pane', '-' .. key }
-            end
-          end
-        end
-
+        local ss = require 'smart-splits'
         local opts = { noremap = true, silent = true, buffer = true }
 
-        vim.keymap.set('n', '<C-h>', move_or_tmux 'h', opts)
-        vim.keymap.set('n', '<C-j>', move_or_tmux 'j', opts)
-        vim.keymap.set('n', '<C-k>', move_or_tmux 'k', opts)
-        vim.keymap.set('n', '<C-l>', move_or_tmux 'l', opts)
+        -- Usar smart-splits para navegação consistente
+        vim.keymap.set('n', '<C-h>', ss.move_cursor_left, opts)
+        vim.keymap.set('n', '<C-j>', ss.move_cursor_down, opts)
+        vim.keymap.set('n', '<C-k>', ss.move_cursor_up, opts)
+        vim.keymap.set('n', '<C-l>', ss.move_cursor_right, opts)
       end,
     })
   end,

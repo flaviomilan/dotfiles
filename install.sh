@@ -12,13 +12,12 @@ install_gum
 install_stow
 
 # -------------------------
-# Função para instalar e configurar apps
+# Função para instalar apps
 #
 
-install_and_configure() {
+install_app() {
   local app="$1"
   gum spin --spinner "dot" --title "Installing app $app..." -- env app="$app" bash -c 'source ./setup/apps.sh; check_and_install "$app"'
-  gum spin --spinner "dot" --title "Configuring app $app..." -- env app="$app" bash -c 'source ./setup/apps.sh; apply_stow_config "'"$config_dir"'" "$app"'
 }
 
 
@@ -40,11 +39,8 @@ required_apps=(
 )
 
 for app in "${required_apps[@]}"; do
-    install_and_configure "$app"
+    install_app "$app"
 done
-
-apply_stow_config "$config_dir" "bash" >/dev/null
-apply_stow_config "$config_dir" "tools" >/dev/null
 
 # --------------------------
 # install available apps
@@ -62,8 +58,11 @@ installable_apps=(
 selected_apps=$(gum choose --no-limit --selected="*" --header "Select desired apps" "${installable_apps[@]}")
 IFS=$'\n' read -rd '' -a selected_apps_array <<<"$selected_apps"
 for app in "${selected_apps_array[@]}"; do
-    install_and_configure "$app"
+    install_app "$app"
 done
 
-echo "Configuração concluída com sucesso!"
+echo "✅ Instalação concluída com sucesso!"
+echo ""
+echo "🔧 Para configurar os aplicativos, execute:"
+echo "   ./configure.sh"
 
