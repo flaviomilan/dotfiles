@@ -144,6 +144,7 @@ return {
         filetype = "snacks_terminal",
       },
       wo = {},
+      shell = vim.env.SHELL or "/bin/zsh",
       keys = {
         q = "hide",
         term_normal = {
@@ -222,7 +223,7 @@ return {
     { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Find Buffers" },
     { "<leader>fg", function() Snacks.picker.grep() end, desc = "Find Text" },
     { "<leader>fr", function() Snacks.picker.recent() end, desc = "Recent Files" },
-    { "<leader>gc", function() Snacks.picker.git_commits() end, desc = "Git Commits" },
+    { "<leader>gc", function() Snacks.picker.git_log() end, desc = "Git Commits" },
     { "<leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },
 
     -- Git integration (evitando duplicação com GitSigns)

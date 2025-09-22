@@ -22,7 +22,7 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
 
     -- Language specific debug adapters
-    'leoluz/nvim-dap-go',           -- Go
+    'leoluz/nvim-dap-go', -- Go
     'mfussenegger/nvim-dap-python', -- Python
     'theHamsta/nvim-dap-virtual-text', -- Virtual text for variables
   },
@@ -247,6 +247,25 @@ return {
       args = {},
       runInTerminal = false,
     })
+
+    -- Elixir debugging
+    dap.adapters.elixir = {
+      type = 'executable',
+      command = vim.fn.stdpath 'data' .. '/mason/bin/elixir-ls', -- Aponta para o elixir-ls do Mason
+      args = {},
+    }
+
+    dap.configurations.elixir = {
+      {
+        type = 'elixir',
+        name = 'mix test',
+        request = 'launch',
+        task = 'test',
+        taskArgs = { '--listen' }, -- Inicia os testes em modo de escuta
+        projectDir = vim.fn.getcwd(),
+        exitAfterTask = true,
+      },
+    }
 
     -- Additional keymaps for better debugging experience
     vim.keymap.set('n', '<leader>dR', function()

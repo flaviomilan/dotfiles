@@ -39,18 +39,28 @@ return {
         -- Docker
         dockerfile = { 'hadolint' },
 
-        -- Lua (selene é mais específico que luacheck)
-        lua = { 'selene' },
+        lua = {},
+
+        elixir = { 'credo' },
+
+        -- Java/Kotlin
+        java = { 'checkstyle' },
+        kotlin = { 'ktlint' },
       }
 
       -- Customizar configurações específicas de linters
       local eslint = lint.linters.eslint
       eslint.args = {
         '--no-eslintrc',
-        '--config', vim.fn.expand('~/.eslintrc.js'),
-        '--format', 'json',
+        '--config',
+        vim.fn.expand '~/.eslintrc.js',
+        '--format',
+        'json',
         '--stdin',
-        '--stdin-filename', function() return vim.api.nvim_buf_get_name(0) end,
+        '--stdin-filename',
+        function()
+          return vim.api.nvim_buf_get_name(0)
+        end,
       }
 
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })

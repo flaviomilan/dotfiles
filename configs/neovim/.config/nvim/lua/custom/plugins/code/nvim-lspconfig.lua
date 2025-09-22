@@ -199,13 +199,48 @@ return {
 
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
-      'stylua', -- Lua formatter
-      'ruff', -- Python linter and formatter
-      'gofumpt', -- Go formatter
-      'goimports', -- Go import organizer
-      'rustfmt', -- Rust formatter
-      'rubocop', -- Ruby linter and formatter
-      'prettier', -- JavaScript/TypeScript formatter
+      -- Linters e Formatadores para diversas linguagens
+
+      -- Lua
+      'stylua',
+
+      -- Python
+      'ruff',
+
+      -- Go
+      'gofumpt',
+      'goimports',
+      'golangci-lint', -- Já corrigido
+
+      -- Rust
+      'rustfmt',
+
+      -- Ruby
+      'rubocop',
+
+      -- Web (JS/TS/CSS/HTML/JSON)
+      'prettier', -- Formatação geral
+      'prettierd', -- Versão rápida do Prettier (recomendado)
+      'eslint', -- Linter para JS/TS
+      'stylelint', -- Linter para CSS
+      'htmlhint', -- Linter para HTML
+      'jsonlint', -- Linter para JSON
+
+      -- Shell
+      'shellcheck', -- Linter
+      'shfmt', -- Formatador
+
+      -- Documentação e Configuração
+      'markdownlint', -- Linter para Markdown (note o '-cli')
+      'yamllint', -- Linter para YAML
+
+      -- Docker
+      'hadolint', -- Linter para Dockerfile
+
+      -- Java/Kotlin
+      'google-java-format', -- Formatador Java
+      'ktlint', -- Formatador e linter Kotlin
+      'checkstyle', -- Linter Java
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
