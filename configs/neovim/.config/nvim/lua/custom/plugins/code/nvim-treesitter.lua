@@ -33,7 +33,7 @@ return {
       'heex',
       'eex',
       'regex',
-      'latex',
+      -- 'latex',
       'scss',
       'svelte',
       'typst',

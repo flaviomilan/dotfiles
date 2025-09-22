@@ -175,10 +175,10 @@ return {
       -- Vue.js
       vue_ls = {},
       -- Java is handled by nvim-jdtls ftplugin
-      -- Kotlin
-      kotlin_language_server = {},
+      -- Kotlin is handled by ftplugin/kotlin.lua with official kotlin-lsp
+      -- kotlin_lsp = {}, -- Handled by ftplugin/kotlin.lua
       -- Erlang
-      erlangls = {},
+      -- erlangls = {},
       -- Elixir
       elixirls = {
         cmd = { '/home/haxtof/.local/share/nvim/mason/bin/elixir-ls' },
@@ -238,6 +238,7 @@ return {
       'hadolint', -- Linter para Dockerfile
 
       -- Java/Kotlin
+      'kotlin-lsp', -- Official JetBrains Kotlin LSP
       'google-java-format', -- Formatador Java
       'ktlint', -- Formatador e linter Kotlin
       'checkstyle', -- Linter Java
