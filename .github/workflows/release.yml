@@ -1,0 +1,98 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    # Skip releases for CI-only changes (docs, lint config, etc.)
+    if: >-
+      !contains(github.event.head_commit.message, '[skip release]') &&
+      !contains(github.event.head_commit.message, '[ci skip]')
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history for changelog generation
+
+      - name: Generate CalVer tag
+        id: tag
+        run: |
+          # CalVer: YYYY.MM.DD — append .N suffix if multiple releases same day
+          BASE_TAG="$(date -u +'%Y.%m.%d')"
+          EXISTING=$(git tag -l "${BASE_TAG}*" | wc -l)
+          if [[ "$EXISTING" -eq 0 ]]; then
+            TAG="$BASE_TAG"
+          else
+            TAG="${BASE_TAG}.${EXISTING}"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "📦 Release tag: $TAG"
+
+      - name: Get previous tag
+        id: prev
+        run: |
+          PREV=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          echo "tag=$PREV" >> "$GITHUB_OUTPUT"
+          echo "📌 Previous tag: ${PREV:-none}"
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          PREV_TAG="${{ steps.prev.outputs.tag }}"
+          {
+            echo "changelog<<EOF"
+            if [[ -z "$PREV_TAG" ]]; then
+              echo "### 🎉 Initial Release"
+              echo ""
+              git log --pretty=format:"- %s (%h)" --no-merges | head -50
+            else
+              echo "### Changes since ${PREV_TAG}"
+              echo ""
+              # Group commits by conventional commit type
+              for type_emoji in "feat:✨ Features" "fix:🐛 Bug Fixes" "docs:📚 Documentation" "refactor:♻️ Refactoring" "chore:🔧 Chores" "style:💄 Style" "perf:⚡ Performance" "ci:👷 CI"; do
+                TYPE="${type_emoji%%:*}"
+                LABEL="${type_emoji#*:}"
+                COMMITS=$(git log "${PREV_TAG}..HEAD" --pretty=format:"- %s (%h)" --no-merges | grep -i "^- ${TYPE}" || true)
+                if [[ -n "$COMMITS" ]]; then
+                  echo "#### ${LABEL}"
+                  echo "$COMMITS" | sed "s/^- ${TYPE}[:(]/- /i; s/^- ${TYPE} /- /i"
+                  echo ""
+                fi
+              done
+
+              # Uncategorized commits
+              UNCATEGORIZED=$(git log "${PREV_TAG}..HEAD" --pretty=format:"- %s (%h)" --no-merges | grep -iv "^- \(feat\|fix\|docs\|refactor\|chore\|style\|perf\|ci\)" || true)
+              if [[ -n "$UNCATEGORIZED" ]]; then
+                echo "#### 📝 Other"
+                echo "$UNCATEGORIZED"
+                echo ""
+              fi
+            fi
+            echo ""
+            echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${PREV_TAG:-$(git rev-list --max-parents=0 HEAD | head -1)}...${{ steps.tag.outputs.tag }}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create Git tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "${{ steps.tag.outputs.tag }}" -m "Release ${{ steps.tag.outputs.tag }}"
+          git push origin "${{ steps.tag.outputs.tag }}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: ${{ steps.tag.outputs.tag }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
+          generate_release_notes: false

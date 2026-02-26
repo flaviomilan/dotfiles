@@ -1,3 +1,74 @@
 [user]
-	email = oflaviomilan@gmail.com
-	name = Flavio Milan
+email = oflaviomilan@gmail.com
+name = Flavio Milan
+
+[init]
+defaultBranch = main
+
+[core]
+editor = nvim
+pager = bat --plain
+
+[pull]
+rebase = true
+
+[push]
+autoSetupRemote = true
+
+[merge]
+conflictstyle = zdiff3
+
+[diff]
+algorithm = histogram
+colorMoved = default
+
+[rerere]
+enabled = true
+
+[alias]
+# Quick shortcuts (work everywhere, not just interactive shell)
+st = status -s
+co = checkout
+sw = switch
+rs = restore
+br = branch
+ci = commit
+cp = cherry-pick
+
+# Undo & fix
+undo = reset --soft HEAD~1
+unstage = restore --staged
+amend = commit --amend --no-edit
+fixup = commit --fixup
+
+# Log
+ll = log --oneline -20
+lg = log --oneline --graph --all --decorate
+lp = log --pretty=format:"%C(yellow)%h%Creset %C(blue)%ad%Creset %C(green)%an%Creset %s%C(red)%d%Creset" --date=short
+today = log --oneline --since='midnight' --author='Flavio'
+
+# Branch management
+bclean = "!f() { git branch --merged ${1:-main} | grep -v ${1:-main} | xargs git branch -d 2>/dev/null; }; f"
+new = switch -c
+gone = "!git branch -vv | grep ': gone]' | awk '{print $1}'"
+prune-gone = "!git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D 2>/dev/null"
+
+# Diff
+dt = difftool
+stat = diff --stat
+last = diff HEAD~1
+
+# WIP
+wip = "!git add -A && git commit -m 'wip [skip ci]'"
+unwip = "!git log -1 --format='%s' | grep -q 'wip' && git reset HEAD~1"
+save = "!git add -A && git commit -m 'checkpoint [skip ci]'"
+
+# Useful
+aliases = config --get-regexp ^alias\\.
+root = rev-parse --show-toplevel
+contributors = shortlog -sn --all --no-merges
+
+# Include local overrides (work email, signing keys, etc.)
+# Create ~/.gitconfig_local for machine-specific settings
+[include]
+path = ~/.gitconfig_local

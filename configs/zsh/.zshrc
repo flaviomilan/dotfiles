@@ -1,93 +1,32 @@
 # --------------------------------------------------
-# Common zsh config
+# Zsh config — slim wrapper over shared shell modules
+# --------------------------------------------------
+
+CURRENT_SHELL="zsh"
+SHELL_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/shell"
 
 # --------------------------------------------------
-# Setup
-
-# fzf
-eval "$(fzf --zsh)"
-export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
-export FZF_DEFAULT_OPTS="--height 50% --layout=default --border --color=hl:#2dd4bf"
-export FZF_CTRL_T_OPTS="--preview 'bat --color=always -n --line-range :500 {}'"
-export FZF_ALT_C_OPTS="--preview 'eza --icons=always --tree --color=always {} | head -200'"
-export FZF_TMUX_OPTS=" -p90%,70% "
-
-# fzf-git
-source ~/.tools/fzf-git.sh
-
-# zoxide
-eval "$(zoxide init zsh)"
-
-# starship
-eval "$(starship init zsh)"
-
-# zsh plugins
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.zsh/zsh-you-should-use/zsh-you-should-use.plugin.zsh
+# Shared modules (order matters: env → aliases → fzf → tools → functions → ai)
+for _mod in environment aliases fzf tools functions ai; do
+  [[ -f "$SHELL_CONFIG_DIR/${_mod}.sh" ]] && source "$SHELL_CONFIG_DIR/${_mod}.sh"
+done
+unset _mod
 
 # --------------------------------------------------
-# Aliases
-# Define custom command aliases for convenience
-
-alias vim='nvim'
-alias c="clear"
-alias ls="eza --no-filesize --long --color=always --icons=always --no-user"
-
-# tree
-alias tree="tree -L 3 -a -I '.git' --charset X "
-alias dtree="tree -L 3 -a -d -I '.git' --charset X "
-
-# lazygit
-alias lg="lazygit"
-
-# git
-alias gt="git"
-alias ga="git add ."
-alias gs="git status -s"
-alias gc='git commit -m'
-alias gca='git commit --amend --no-edit'
-alias gk='git checkout'
-
-alias gpl='git pull'
-alias gplr='git pull --rebase'
-
-alias gps='git push'
-alias gpsf='git push --force-with-lease'
-
-alias glog='git log --oneline --graph --all'
+# Zsh-specific: fzf key bindings & completion
+command -v fzf &>/dev/null && eval "$(fzf --zsh)"
 
 # --------------------------------------------------
-# Shell Options
-# Configure various shell behavior options
+# Zsh-specific: plugins (vendored in ~/.zsh/)
+[[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ]]     && source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+[[ -f ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ -f ~/.zsh/zsh-you-should-use/zsh-you-should-use.plugin.zsh ]]   && source ~/.zsh/zsh-you-should-use/zsh-you-should-use.plugin.zsh
 
 # --------------------------------------------------
-# Miscellaneous
-# Any other configurations or commands you want to add
+# Local overrides (machine-specific, not tracked by git)
+[[ -f ~/.zshrc_local ]] && source ~/.zshrc_local
 
 # --------------------------------------------------
-# Functions
-# Define custom shell functions
-
-# --------------------------------------------------
-# OS Specific configs
-# Load configs based on OS
-
-if [[ "$(uname)" == "Darwin" ]]; then
-  source ~/.zshrc_mac
-elif [[ "$(uname)" == "Linux" ]]; then
-  source ~/.zshrc_nix
-fi
-
-
-# Auto-start tmux if not already inside tmux
-if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
-  tmux attach-session -t main || tmux new-session -s main
-fi
-
-# GPG agent setup
-export GPG_TTY=$(tty)
-gpg-connect-agent updatestartuptty /bye >/dev/null
+# Tmux auto-start & GPG (loaded last so it can take over the terminal)
+[[ -f "$SHELL_CONFIG_DIR/tmux.sh" ]] && source "$SHELL_CONFIG_DIR/tmux.sh"
 

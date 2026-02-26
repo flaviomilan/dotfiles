@@ -1,3 +1,6 @@
+# Project-local mise config (for developing these dotfiles)
+# This does NOT affect your global tool versions.
+# Global versions are managed in: configs/mise/.config/mise/config.toml
+
 [tools]
-lua = "5.1"
-rust = "latest"
+lua = "5.1" # neovim plugin dev
