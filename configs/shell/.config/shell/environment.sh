@@ -21,7 +21,8 @@ export PAGER='bat --plain'
 export MANPAGER='bat --plain'
 
 # GPG
-export GPG_TTY=$(tty)
+GPG_TTY=$(tty)
+export GPG_TTY
 
 # XDG (ensure consistent paths)
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"

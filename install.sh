@@ -71,7 +71,7 @@ parse_args() {
         DRY_RUN=true
         ;;
       -v|--verbose)
-        VERBOSE=true
+        export VERBOSE=true
         ;;
       -h|--help)
         usage

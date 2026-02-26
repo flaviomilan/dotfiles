@@ -4,7 +4,7 @@
 # --------------------------------------------------
 
 # Create a directory and cd into it
-mkcd() { mkdir -pv "$@" && cd "${@:$#}"; }
+mkcd() { mkdir -pv "$@" && cd "${@:$#}" || return; }
 
 # Extract any archive
 extract() {
@@ -44,7 +44,7 @@ serve() {
 
 # Git clone and cd into the repo
 gclone() {
-  git clone "$1" && cd "$(basename "${1%.git}")"
+  git clone "$1" && cd "$(basename "${1%.git}")" || return
 }
 
 # Find and kill a process by name

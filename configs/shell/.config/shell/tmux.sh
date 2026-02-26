@@ -4,7 +4,8 @@
 # --------------------------------------------------
 
 # GPG agent — ensure tty is set for pinentry
-export GPG_TTY="$(tty)"
+GPG_TTY="$(tty)"
+export GPG_TTY
 
 # Auto-start tmux when opening an interactive terminal
 # - Skip inside VS Code, JetBrains, Emacs, or nested tmux

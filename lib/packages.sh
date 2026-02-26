@@ -35,9 +35,6 @@ declare -A PACKAGE_MAP=(
   [sesh]="brew:joshmedeski/sesh/sesh"
 )
 
-# Packages that require AUR on Arch (not in official repos)
-readonly -a AUR_PACKAGES=(obsidian discord 1password)
-
 # Resolve generic package name to platform-specific name
 resolve_package_name() {
   local generic="$1"
