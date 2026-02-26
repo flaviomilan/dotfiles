@@ -7,7 +7,8 @@ CONFIG_DIR   := $(DOTFILES_DIR)/configs
 SHELL        := /bin/bash
 
 .PHONY: help install install-full install-overlay install-minimal uninstall \
-        lint test backup restore update stow-% unstow-%
+        lint test backup restore update stow-% unstow-% \
+        snapshot snapshot-list snapshot-diff rollback snapshot-cleanup
 
 # ─── Default ──────────────────────────────────────────────────────────────
 
@@ -71,13 +72,34 @@ update: ## Pull latest changes and re-stow configs
 	@bash install.sh --yes full
 	@echo "✓ Updated"
 
-backup: ## List available config backups
-	@bash -c 'source lib/stow.sh; list_backups'
+snapshot: ## Take a snapshot of current configs before changes
+	@bash -c 'source lib/stow.sh; snapshot_create manual'
 
-restore: ## Restore a config backup (interactive)
-	@bash -c 'source lib/stow.sh; list_backups; \
-		read -rp "Enter timestamp to restore: " ts; \
-		restore_backup "$$ts"'
+snapshot-list: ## List all available snapshots
+	@bash -c 'source lib/stow.sh; snapshot_list'
+
+snapshot-diff: ## Show changes since last snapshot (usage: make snapshot-diff ID=<id>)
+	@bash -c 'source lib/stow.sh; \
+		if [ -n "$(ID)" ]; then snapshot_diff "$(ID)"; \
+		else \
+			latest=$$(ls -1d $$HOME/.dotfiles-backup/*/ 2>/dev/null | tail -1 | xargs basename 2>/dev/null); \
+			if [ -n "$$latest" ]; then snapshot_diff "$$latest"; \
+			else echo "No snapshots found"; fi; \
+		fi'
+
+rollback: ## Restore the most recent valid snapshot
+	@bash -c 'source lib/stow.sh; snapshot_rollback'
+
+restore: ## Restore a specific snapshot (interactive)
+	@bash -c 'source lib/stow.sh; snapshot_list; echo ""; \
+		read -rp "Enter snapshot ID to restore: " id; \
+		snapshot_restore "$$id"'
+
+snapshot-cleanup: ## Remove old snapshots, keep 5 most recent
+	@bash -c 'source lib/stow.sh; snapshot_cleanup 5'
+
+backup: ## (Legacy) Alias for snapshot-list
+	@bash -c 'source lib/stow.sh; snapshot_list'
 
 # ─── Release ──────────────────────────────────────────────────────────────
 

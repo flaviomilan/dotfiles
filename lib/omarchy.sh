@@ -30,10 +30,8 @@ readonly -a OMARCHY_PROVIDED_TOOLS=(
 # Configs that Omarchy manages (potential conflicts)
 readonly -a OMARCHY_MANAGED_CONFIGS=(
   neovim
-  ghostty
   tmux
   zsh
-  starship
 )
 
 # Check which Omarchy-provided tools are already installed
@@ -69,9 +67,6 @@ get_conflicting_configs() {
       zsh)
         [[ -f "$HOME/.zshrc" ]] && conflicts+=("zsh")
         ;;
-      starship)
-        [[ -f "$HOME/.config/starship.toml" ]] && conflicts+=("starship")
-        ;;
     esac
   done
   echo "${conflicts[@]}"
@@ -83,30 +78,30 @@ select_omarchy_configs() {
   conflicts="$(get_conflicting_configs)"
 
   if [[ -z "$conflicts" ]]; then
-    log_info "No config conflicts detected with Omarchy"
+    log_info "No config conflicts detected with Omarchy" >&2
     return 0
   fi
 
-  log_step "Omarchy config conflicts detected"
-  log_info "The following configs already exist (likely from Omarchy):"
+  log_step "Omarchy config conflicts detected" >&2
+  log_info "The following configs already exist (likely from Omarchy):" >&2
   for config in $conflicts; do
-    log_dim "  • $config"
+    log_dim "  • $config" >&2
   done
-  echo ""
+  echo "" >&2
 
   if command -v gum &>/dev/null; then
-    log_info "Select which configs to REPLACE with your personal dotfiles:"
-    log_dim "(Existing configs will be backed up to ~/.dotfiles-backup/)"
-    echo ""
+    log_info "Select which configs to REPLACE with your personal dotfiles:" >&2
+    log_dim "(Existing configs will be backed up to ~/.dotfiles-backup/)" >&2
+    echo "" >&2
 
     # shellcheck disable=SC2086
     local selected
     selected=$(gum choose --no-limit --header "Replace with personal config?" $conflicts)
     echo "$selected"
   else
-    log_info "For each config, choose whether to replace with your personal version."
-    log_dim "Existing configs will be backed up to ~/.dotfiles-backup/"
-    echo ""
+    log_info "For each config, choose whether to replace with your personal version." >&2
+    log_dim "Existing configs will be backed up to ~/.dotfiles-backup/" >&2
+    echo "" >&2
 
     local selected=()
     for config in $conflicts; do

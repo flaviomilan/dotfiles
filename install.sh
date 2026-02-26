@@ -93,7 +93,6 @@ parse_args() {
 readonly -a CORE_TOOLS=(
   neovim
   font-jetbrains
-  ghostty
   zsh
   fzf
   fd
@@ -109,7 +108,6 @@ readonly -a CORE_TOOLS=(
 readonly -a CORE_CONFIGS=(
   shell
   neovim
-  ghostty
   zsh
   bash
   tmux
@@ -267,8 +265,8 @@ run_overlay_install() {
     done
   fi
 
-  # Always apply non-conflicting configs
-  for config in bash tools git; do
+  # Always apply non-conflicting configs (shell first — .bashrc/.zshrc depend on it)
+  for config in shell bash tools git; do
     stow_config "$config"
   done
 
@@ -321,7 +319,7 @@ run_minimal_install() {
 
   # Only stow non-conflicting configs
   log_step "Applying non-conflicting configs"
-  for config in bash tools git; do
+  for config in shell bash tools git; do
     stow_config "$config"
   done
 
@@ -338,7 +336,7 @@ run_uninstall() {
     confirm "Proceed with uninstall?" || exit 0
   fi
 
-  local all_configs=(shell neovim ghostty zsh bash tmux git tools starship mise)
+  local all_configs=(shell neovim zsh bash tmux git tools starship mise)
 
   for config in "${all_configs[@]}"; do
     if [[ -d "$CONFIG_DIR/$config" ]]; then
@@ -351,13 +349,25 @@ run_uninstall() {
     fi
   done
 
-  # Offer backup restore
+  # Offer snapshot restore
   if [[ -d "$HOME/.dotfiles-backup" ]] && [[ "$SKIP_INTERACTIVE" != "true" ]]; then
     echo ""
-    if confirm "Restore configs from backup?"; then
-      list_backups
-      read -rp "Enter timestamp to restore: " timestamp
-      restore_backup "$timestamp"
+    if confirm "Restore configs from a snapshot?"; then
+      snapshot_list
+      echo ""
+      # Use gum if available, otherwise plain read
+      if command -v gum &>/dev/null; then
+        local choices
+        choices=$(find "$HOME/.dotfiles-backup" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort -r)
+        if [[ -n "$choices" ]]; then
+          local selected
+          selected=$(echo "$choices" | gum choose --header "Select snapshot to restore:")
+          [[ -n "$selected" ]] && snapshot_restore "$selected"
+        fi
+      else
+        read -rp "Enter snapshot ID to restore: " timestamp
+        [[ -n "$timestamp" ]] && snapshot_restore "$timestamp"
+      fi
     fi
   fi
 
@@ -391,6 +401,12 @@ main() {
   # Ensure prerequisites (except for uninstall/dry-run)
   if [[ "$INSTALL_MODE" != "uninstall" ]] && [[ "$DRY_RUN" != "true" ]]; then
     install_prerequisites
+  fi
+
+  # Take a full snapshot before any install (safety net)
+  if [[ "$INSTALL_MODE" != "uninstall" ]] && [[ "$DRY_RUN" != "true" ]]; then
+    log_step "Creating pre-install snapshot..."
+    snapshot_create "pre-${INSTALL_MODE}" >/dev/null 2>&1 || true
   fi
 
   case "$INSTALL_MODE" in

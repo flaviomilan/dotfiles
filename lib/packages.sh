@@ -76,15 +76,24 @@ install_package() {
 
   log_dim "Installing $resolved via $pkg_mgr..."
 
+  # Ensure brew is in PATH if detected at known location
+  if [[ "$pkg_mgr" == "brew" ]] && ! command -v brew &>/dev/null; then
+    if [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+      eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    elif [[ -x "$HOME/.linuxbrew/bin/brew" ]]; then
+      eval "$("$HOME/.linuxbrew/bin/brew" shellenv)"
+    fi
+  fi
+
   case "$pkg_mgr" in
     brew)
-      brew install "$resolved" 2>/dev/null || brew install --cask "$resolved" 2>/dev/null
+      brew install "$resolved" 2>&1 || brew install --cask "$resolved" 2>&1
       ;;
     pacman)
-      sudo pacman -S --noconfirm --needed "$resolved" 2>/dev/null
+      sudo pacman -S --noconfirm --needed "$resolved"
       ;;
     apt)
-      sudo apt install -y -qq "$resolved" 2>/dev/null
+      sudo apt install -y -qq "$resolved"
       ;;
     *)
       log_error "Unsupported package manager for installing $package"

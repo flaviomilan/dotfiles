@@ -50,7 +50,10 @@ is_omarchy() {
 
 # Get the package manager for the current platform
 get_package_manager() {
+  # Check brew in PATH first, then at known Linuxbrew locations
   if command -v brew &>/dev/null; then
+    echo "brew"
+  elif [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]] || [[ -x "$HOME/.linuxbrew/bin/brew" ]]; then
     echo "brew"
   elif command -v pacman &>/dev/null; then
     echo "pacman"
