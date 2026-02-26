@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # --------------------------------------------------
 # shell/aliases.sh — Shared aliases for bash & zsh
 # --------------------------------------------------

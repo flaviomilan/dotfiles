@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # --------------------------------------------------
 # shell/fzf.sh — fzf configuration (shared, shell-agnostic exports)
 # --------------------------------------------------

@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # --------------------------------------------------
 # shell/tmux.sh — tmux auto-attach and GPG agent
 # --------------------------------------------------

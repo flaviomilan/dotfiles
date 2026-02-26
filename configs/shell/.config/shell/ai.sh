@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # --------------------------------------------------
 # shell/ai.sh — AI tool aliases, functions & env setup
 # --------------------------------------------------

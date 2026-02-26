@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # --------------------------------------------------
 # shell/tools.sh — CLI tool initialization (zoxide, starship, mise)
 # --------------------------------------------------

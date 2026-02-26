@@ -5,7 +5,6 @@
 set -euo pipefail
 
 CONFIG_DIR="${1:-$(cd "$(dirname "$0")/../configs" && pwd)}"
-DOTFILES_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 GREEN='\033[32m'
 RED='\033[31m'
