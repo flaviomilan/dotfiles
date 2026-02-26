@@ -1,1 +1,12 @@
+# Local binaries and tools
 configs/tools/.local/
+
+# Neovim plugin lock (machine-specific)
+configs/neovim/.config/nvim/lazy-lock.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup dir
+.dotfiles-backup/

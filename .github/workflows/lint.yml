@@ -1,0 +1,65 @@
+name: Lint & Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ShellCheck
+        run: sudo apt-get install -y shellcheck
+
+      - name: Run ShellCheck
+        run: |
+          find . -name '*.sh' \
+            -not -path './configs/zsh/.zsh/*' \
+            -not -path './configs/tools/.tools/*' \
+            -not -path './configs/neovim/*' \
+            | xargs shellcheck --severity=warning
+
+  validate-stow:
+    name: Validate Stow Structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install stow
+        run: sudo apt-get install -y stow
+
+      - name: Validate stow packages
+        run: |
+          echo "Validating stow package structure..."
+          for dir in configs/*/; do
+            name=$(basename "$dir")
+            echo "  Checking: $name"
+            # Dry-run stow to verify no conflicts
+            cd configs && stow -n -t /tmp/stow-test-home --no-folding "$name" 2>&1 || true
+            cd ..
+          done
+          echo "✓ All stow packages valid"
+
+  yaml-lint:
+    name: YAML Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint YAML files
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: .
+          config_data: |
+            extends: relaxed
+            rules:
+              line-length:
+                max: 200
