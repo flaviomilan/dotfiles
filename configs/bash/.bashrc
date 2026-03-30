@@ -32,5 +32,5 @@ shopt -s checkwinsize   # update LINES/COLUMNS after each command
 
 # --------------------------------------------------
 # Tmux auto-start & GPG (loaded last so it can take over the terminal)
-[[ -f "$SHELL_CONFIG_DIR/tmux.sh" ]] && source "$SHELL_CONFIG_DIR/tmux.sh"
+# [[ -f "$SHELL_CONFIG_DIR/tmux.sh" ]] && source "$SHELL_CONFIG_DIR/tmux.sh"
 

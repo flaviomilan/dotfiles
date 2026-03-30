@@ -17,3 +17,7 @@ gtk-titlebar = false
 
 # macOS-only tweaks
 macos-option-as-alt = true
+
+# Linux/Wayland: fix slowness on Hyprland (no-op on macOS)
+# https://github.com/ghostty-org/ghostty/discussions/3224
+# async-backend = epoll  # Uncomment on Linux; macOS uses kqueue by default

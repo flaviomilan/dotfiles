@@ -21,9 +21,23 @@ conflictstyle = zdiff3
 [diff]
 algorithm = histogram
 colorMoved = default
+mnemonicPrefix = true
+
+[commit]
+verbose = true
 
 [rerere]
 enabled = true
+autoupdate = true
+
+[column]
+ui = auto
+
+[branch]
+sort = -committerdate
+
+[tag]
+sort = -version:refname
 
 [alias]
 # Quick shortcuts (work everywhere, not just interactive shell)

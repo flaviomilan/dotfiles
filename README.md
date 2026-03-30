@@ -1,6 +1,8 @@
 # Dotfiles
 
-Personal dotfiles for a terminal-centric workflow. Cross-platform setup for **macOS** and **Arch Linux**, with first-class support for [Omarchy](https://github.com/basecamp/omarchy) (DHH's Arch Linux).
+Personal dotfiles for a terminal-centric workflow. Primarily designed for **macOS** with cross-platform support for **Arch Linux**.
+
+> **Using Omarchy?** See [dotfiles.omarchy](https://github.com/flaviomilan/dotfiles.omarchy) — a lightweight overlay that respects the omakase philosophy.
 
 ## Quick Start
 
@@ -46,7 +48,7 @@ dotfiles/
 │   ├── ghostty/         # Ghostty terminal config
 │   ├── git/             # .gitconfig
 │   ├── mise/            # mise global tool versions
-│   ├── neovim/          # Neovim (kickstart.nvim based)
+│   ├── neovim/          # Neovim (LazyVim based)
 │   ├── shell/           # Shared shell modules (aliases, fzf, tools…)
 │   ├── starship/        # Starship prompt config
 │   ├── tmux/            # tmux config with plugins
