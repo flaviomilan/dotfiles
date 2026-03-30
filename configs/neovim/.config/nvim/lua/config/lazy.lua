@@ -52,6 +52,7 @@ require("lazy").setup({
     { import = "plugins" },
   },
   defaults = { lazy = false, version = false },
+  install = { colorscheme = { "tokyonight", "habamax" } },
   checker = { enabled = true },
   performance = {
     rtp = {

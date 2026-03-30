@@ -1,6 +1,6 @@
 # Ghostty — https://ghostty.org/docs/config
 
-theme = Gruvbox Dark Hard
+theme = Tokyo Night
 
 font-size = 11
 font-family = JetBrainsMono NF
